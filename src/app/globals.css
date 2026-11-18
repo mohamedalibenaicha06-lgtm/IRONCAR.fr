@@ -85,3 +85,44 @@ html[data-intro="play"] .site-header { animation: header-in .8s var(--ease-cine)
   .hero-parallax, .hero-content { animation: none !important; }
 }
 html[data-intro="play"] .page-enter { animation: none; }
+
+/* ===== Menu mobile : entrée « showroom » ===== */
+.menu-panel { transform: translateX(100%); visibility: hidden; transition: transform 200ms cubic-bezier(.4, 0, .9, .6), visibility 0s linear 200ms; will-change: transform; }
+.menu-panel[data-open="true"] { transform: none; visibility: visible; transition: transform 260ms cubic-bezier(.12, .9, .2, 1), visibility 0s; }
+
+/* Rubriques : arrivée rapide depuis l'extérieur, freinage net, léger dépassement puis stabilisation */
+.menu-item { opacity: 0; transition: opacity 120ms ease-in, transform 160ms ease-in; }
+.menu-item.from-left { transform: translateX(-28px); }
+.menu-item.from-right { transform: translateX(28px); }
+[data-open="true"] .menu-item { opacity: 1; transform: none; transition: none; animation: drive-in 420ms cubic-bezier(.1, .8, .15, 1) both; animation-delay: calc(40ms + var(--i) * 55ms); }
+[data-open="true"] .menu-item.from-left { --from: -105vw; --brake: 7px; }
+[data-open="true"] .menu-item.from-right { --from: 105vw; --brake: -7px; }
+@keyframes drive-in {
+  0% { transform: translateX(var(--from)); opacity: 1; }
+  68% { transform: translateX(var(--brake)); }
+  84% { transform: translateX(calc(var(--brake) * -0.3)); }
+  100% { transform: none; opacity: 1; }
+}
+
+.menu-fade { opacity: 0; transition: opacity 120ms ease-in; }
+[data-open="true"] .menu-fade { opacity: 1; transition: opacity 240ms ease-out 260ms; }
+
+/* Classe G : accélère depuis la droite, freine en douceur */
+.menu-car { opacity: 0; transform: translateX(40%); transition: opacity 120ms ease-in, transform 160ms ease-in; --m: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent), linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent); -webkit-mask-image: var(--m); mask-image: var(--m); -webkit-mask-composite: source-in; mask-composite: intersect; }
+[data-open="true"] .menu-car { opacity: 1; transform: none; transition: none; animation: car-arrive 560ms both 180ms; }
+@keyframes car-arrive {
+  0% { transform: translateX(55%); opacity: 0; animation-timing-function: cubic-bezier(.5, 0, .9, .4); }
+  35% { opacity: 1; animation-timing-function: cubic-bezier(.1, .7, .2, 1); }
+  45% { transform: translateX(8%); animation-timing-function: cubic-bezier(.15, .85, .25, 1); }
+  85% { transform: translateX(-1.2%); }
+  100% { transform: none; opacity: 1; }
+}
+
+/* Logo : apparition nette à l'ouverture */
+[data-menu-open="true"] .logo-mark { animation: logo-snap 280ms cubic-bezier(.12, .9, .2, 1) both; }
+@keyframes logo-snap { from { opacity: .2; transform: translateX(-10px); letter-spacing: .3em; } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .menu-panel, .menu-panel[data-open="true"] { transition: visibility 0s; }
+  .menu-item, .menu-car, .menu-fade { opacity: 1 !important; transform: none !important; }
+}
