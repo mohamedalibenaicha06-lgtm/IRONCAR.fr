@@ -1,13 +1,15 @@
+import type { ReactNode } from "react";
 import { Reveal } from "./Reveal";
 
-export function SectionHeading({ kicker, title, intro, align = "left" }: {
-  kicker: string; title: string; intro?: string; align?: "left" | "center";
-}) {
+export function SectionHeading({ eyebrow, title, intro, action }: { eyebrow?: string; title: string; intro?: string; action?: ReactNode }) {
   return (
-    <Reveal className={`mb-10 md:mb-14 ${align === "center" ? "mx-auto max-w-3xl text-center" : "max-w-3xl"}`}>
-      <p className="kicker mb-4">{kicker}</p>
-      <h2 className="display text-4xl sm:text-5xl md:text-6xl">{title}</h2>
-      {intro && <p className="mt-5 text-base text-mute md:text-lg">{intro}</p>}
+    <Reveal className="mb-8 flex flex-col gap-4 md:mb-12 md:flex-row md:items-end md:justify-between">
+      <div className="max-w-2xl">
+        {eyebrow && <p className="eyebrow mb-3">{eyebrow}</p>}
+        <h2 className="text-[1.75rem] font-semibold leading-tight md:text-4xl">{title}</h2>
+        {intro && <p className="mt-3 text-base leading-relaxed text-mute md:text-lg">{intro}</p>}
+      </div>
+      {action}
     </Reveal>
   );
 }

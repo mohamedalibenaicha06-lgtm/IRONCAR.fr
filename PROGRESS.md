@@ -12,7 +12,16 @@
   - `src/lib/leads.ts` — `submitLead()` à brancher sur une table `leads`
 - Build de production OK (`npm run build`), vérifié desktop + mobile
 
+## ✅ v0.3 — Refonte « agence »
+- Thème clair et sobre, une seule police (Inter), titres en casse normale, hiérarchie revue
+- Effets supprimés (dégradés, néons, marquee, mot rotatif, compteurs, projecteur) ; animations courtes et discrètes
+- Textes réécrits sans promesses inventées (statistiques, garanties, tarifs retirés)
+- Navigation : Acheter / Vendre / Louer / Inspection / Contact ; menu mobile simple ; barre d'action fixe sur les fiches (mobile)
+- Fiches : tableau de caractéristiques, galerie avec glissement tactile ; formulaires avec libellés
+- Visuels de démo neutres « photo à venir » ; SEO : sitemap, robots, JSON-LD ; page contact statique
+
 ## ⏳ À faire
+- [ ] **Vraies photos des véhicules** (non téléchargeables depuis l'environnement de travail)
 - [ ] Remplacer coordonnées/adresse/WhatsApp fictifs (`src/lib/site.ts`)
 - [ ] Supabase : tables `vehicles`, `leads`, Storage photos, `supabaseVehicleRepository`
 - [ ] Authentification + espace admin privé (CRUD véhicules, upload photos)

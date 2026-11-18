@@ -3,17 +3,27 @@ import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { WhatsAppFab } from "@/components/WhatsAppFab";
+import { site, siteUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: { default: "IRONCAR — Automobiles d'exception à Nice", template: "%s · IRONCAR Nice" },
+  metadataBase: new URL(siteUrl),
+  openGraph: { type: "website", locale: "fr_FR", siteName: "IRONCAR", images: ["/demo/demo-coupe-gt-v8-1.svg"] },
+  title: { default: "IRONCAR · Achat, vente, location et inspection automobile à Nice", template: "%s · IRONCAR Nice" },
   description: "Achat, vente, location, reprise et inspection automobile à Nice et sur la Côte d'Azur.",
 };
-export const viewport: Viewport = { themeColor: "#0a0a0b" };
+export const viewport: Viewport = { themeColor: "#ffffff" };
+
+const dealerLd = {
+  "@context": "https://schema.org", "@type": "AutoDealer", name: site.name, url: siteUrl, telephone: site.phone, email: site.email,
+  address: { "@type": "PostalAddress", addressLocality: "Nice", postalCode: "06000", addressCountry: "FR" },
+  areaServed: "Alpes-Maritimes",
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr">
       <body>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(dealerLd) }} />
         <Header />
         <main>{children}</main>
         <Footer />

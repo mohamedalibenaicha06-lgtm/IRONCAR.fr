@@ -1,19 +1,21 @@
 /** Coordonnées FICTIVES — à remplacer par les vraies informations. */
 export const site = {
   name: "IRONCAR",
-  tagline: "Automobiles d'exception à Nice",
+  tagline: "Achat, vente, location et inspection automobile à Nice",
   city: "Nice",
-  address: "00 Promenade des Anglais, 06000 Nice (adresse fictive)",
+  address: "Adresse à préciser, 06000 Nice",
   phone: "+33 4 00 00 00 00",
   whatsapp: "33600000000",
   email: "contact@ironcar.example",
-  hours: "Lun–Sam · 9h–19h",
+  hours: "Sur rendez-vous",
 };
 
+export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
 export const nav = [
-  { href: "/achat", label: "Achat & Vente" },
-  { href: "/location", label: "Location" },
-  { href: "/reprise", label: "Reprise & Recherche" },
+  { href: "/achat", label: "Acheter" },
+  { href: "/reprise", label: "Vendre" },
+  { href: "/location", label: "Louer" },
   { href: "/inspection", label: "Inspection" },
   { href: "/contact", label: "Contact" },
 ];

@@ -13,11 +13,14 @@ function Select({ label, value, onChange, options }: {
 }) {
   return (
     <label className="flex flex-col gap-1.5">
-      <span className="text-[11px] uppercase tracking-[0.18em] text-mute">{label}</span>
-      <select value={value} onChange={(e) => onChange(e.target.value)}
-        className="h-11 rounded-xl border border-line bg-steel px-3 text-sm text-ivory outline-none transition focus:border-ember">
-        {options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
-      </select>
+      <span className="text-[0.8125rem] text-mute">{label}</span>
+      <span className="relative">
+        <select value={value} onChange={(e) => onChange(e.target.value)}
+          className="h-11 w-full appearance-none rounded-md border border-line bg-white pr-9 pl-3 text-base text-ink outline-none transition-colors hover:border-ink/30 focus:border-ink md:text-[0.9375rem]">
+          {options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+        </select>
+        <Icon name="arrow" className="pointer-events-none absolute top-1/2 right-3 size-3.5 -translate-y-1/2 rotate-90 text-mute" />
+      </span>
     </label>
   );
 }
@@ -30,53 +33,61 @@ export function CatalogView({ vehicles, brands, listingType }: { vehicles: Vehic
   const results = useMemo(() => applyFilters(vehicles, f), [vehicles, f]);
   const sale = listingType === "sale";
   const any = (l: string) => [{ value: "", label: l }];
-  const activeCount = Object.entries(f).filter(([k, v]) => k !== "sort" && v !== undefined && v !== "").length;
+  const activeCount = Object.entries(f).filter(([k, v]) => k !== "sort" && k !== "query" && v !== undefined && v !== "").length;
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 md:py-14">
-      <div className="mb-6 flex flex-col gap-3 sm:flex-row">
+    <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8 md:py-10">
+      <div className="flex gap-2.5">
         <div className="relative flex-1">
-          <Icon name="search" className="absolute top-1/2 left-4 size-4 -translate-y-1/2 text-mute" />
-          <input value={f.query ?? ""} onChange={(e) => set("query")(e.target.value)} placeholder="Rechercher une marque, un modèle…"
-            className="h-12 w-full rounded-full border border-line bg-coal pr-4 pl-11 text-sm outline-none transition focus:border-ember" />
+          <Icon name="search" className="absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-mute" />
+          <input value={f.query ?? ""} onChange={(e) => set("query")(e.target.value)} placeholder="Marque ou modèle" aria-label="Rechercher"
+            className="h-11 w-full rounded-md border border-line bg-white pr-4 pl-10 text-base outline-none transition-colors placeholder:text-mute hover:border-ink/30 focus:border-ink md:text-[0.9375rem]" />
         </div>
-        <button onClick={() => setOpen((o) => !o)} className="flex h-12 items-center justify-center gap-2 rounded-full border border-line px-5 text-sm md:hidden">
-          <Icon name="filter" className="size-4" /> Filtres {activeCount > 0 && <span className="grid size-5 place-items-center rounded-full bg-ember text-[10px] font-bold text-black">{activeCount}</span>}
+        <button onClick={() => setOpen((o) => !o)} aria-expanded={open}
+          className="flex h-11 items-center gap-2 rounded-md border border-line bg-white px-4 text-[0.9375rem] md:hidden">
+          <Icon name="filter" className="size-4" /> Filtres{activeCount > 0 && ` (${activeCount})`}
         </button>
       </div>
 
-      <div className={`grid gap-3 overflow-hidden transition-all duration-500 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 md:!max-h-none md:!opacity-100 ${open ? "max-h-[800px] opacity-100" : "max-h-0 opacity-0"}`}>
+      <div className={`grid gap-3 sm:grid-cols-2 md:mt-5 md:!grid md:grid-cols-3 lg:grid-cols-5 ${open ? "mt-4 grid" : "hidden"}`}>
         <Select label="Marque" value={f.brand ?? ""} onChange={set("brand")} options={[...any("Toutes"), ...brands.map((b) => ({ value: b, label: b }))]} />
         <Select label="Carrosserie" value={f.bodyType ?? ""} onChange={set("bodyType")} options={[...any("Toutes"), ...BODIES.map((b) => ({ value: b, label: b }))]} />
         <Select label="Énergie" value={f.fuel ?? ""} onChange={set("fuel")} options={[...any("Toutes"), ...FUELS.map((b) => ({ value: b, label: b }))]} />
         <Select label="Boîte" value={f.transmission ?? ""} onChange={set("transmission")} options={[...any("Toutes"), { value: "Automatique", label: "Automatique" }, { value: "Manuelle", label: "Manuelle" }]} />
         {sale ? (
-          <Select label="Budget max" value={String(f.maxPrice ?? "")} onChange={set("maxPrice")}
-            options={[...any("Illimité"), ...[25000, 50000, 75000, 100000, 150000].map((n) => ({ value: String(n), label: `${n / 1000} k€` }))]} />
+          <Select label="Budget maximum" value={String(f.maxPrice ?? "")} onChange={set("maxPrice")}
+            options={[...any("Sans limite"), ...[25000, 50000, 75000, 100000, 150000].map((n) => ({ value: String(n), label: `${new Intl.NumberFormat("fr-FR").format(n)} €` }))]} />
         ) : (
-          <Select label="Tarif / jour max" value={String(f.maxPrice ?? "")} onChange={set("maxPrice")}
-            options={[...any("Illimité"), ...[80, 150, 250, 400].map((n) => ({ value: String(n), label: `${n} €` }))]} />
+          <Select label="Tarif par jour maximum" value={String(f.maxPrice ?? "")} onChange={set("maxPrice")}
+            options={[...any("Sans limite"), ...[80, 150, 250, 400].map((n) => ({ value: String(n), label: `${n} €` }))]} />
         )}
-        <Select label="Trier" value={f.sort ?? "recent"} onChange={set("sort")} options={[
-          { value: "recent", label: "Plus récents" }, { value: "price-asc", label: "Prix croissant" },
-          { value: "price-desc", label: "Prix décroissant" }, ...(sale ? [{ value: "mileage-asc", label: "Kilométrage" }] : []),
-        ]} />
       </div>
 
-      <div className="mt-8 mb-6 flex items-center justify-between text-sm text-mute">
-        <span><strong className="text-ivory">{results.length}</strong> véhicule{results.length > 1 ? "s" : ""}</span>
-        {activeCount > 0 && <button onClick={() => setF({ sort: f.sort })} className="text-ember hover:underline">Réinitialiser</button>}
+      <div className="mt-8 mb-6 flex items-center justify-between gap-4 border-b border-line pb-4">
+        <p className="text-[0.9375rem] text-mute">
+          {results.length} véhicule{results.length > 1 ? "s" : ""}
+          {activeCount > 0 && <button onClick={() => setF({ sort: f.sort, query: f.query })} className="ml-3 text-ink underline underline-offset-4">Effacer les filtres</button>}
+        </p>
+        <label className="flex items-center gap-2 text-[0.9375rem] text-mute">
+          <span className="hidden sm:inline">Trier par</span>
+          <select value={f.sort ?? "recent"} onChange={(e) => set("sort")(e.target.value)} aria-label="Trier"
+            className="bg-transparent text-base font-medium text-ink outline-none md:text-[0.9375rem]">
+            <option value="recent">Plus récents</option>
+            <option value="price-asc">Prix croissant</option>
+            <option value="price-desc">Prix décroissant</option>
+            {sale && <option value="mileage-asc">Kilométrage</option>}
+          </select>
+        </label>
       </div>
 
       {results.length ? (
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {results.map((v, i) => (
-            <div key={v.id} className="rise block min-w-0"  style={{ ["--d" as string]: `${Math.min(i, 6) * 60}ms` }}><VehicleCard v={v} /></div>
-          ))}
+        <div className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+          {results.map((v) => <VehicleCard key={v.id} v={v} />)}
         </div>
       ) : (
-        <div className="rounded-3xl border border-dashed border-line p-12 text-center text-mute">
-          Aucun véhicule ne correspond. Essayez d&apos;élargir vos critères — ou confiez-nous votre recherche.
+        <div className="rounded-md bg-sand px-6 py-14 text-center">
+          <p className="font-medium">Aucun véhicule ne correspond à ces critères.</p>
+          <p className="mt-1 text-[0.9375rem] text-mute">Élargissez votre recherche ou indiquez-nous le véhicule que vous cherchez.</p>
         </div>
       )}
     </div>

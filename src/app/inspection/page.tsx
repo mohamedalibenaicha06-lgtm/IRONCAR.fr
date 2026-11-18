@@ -2,62 +2,68 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/PageHero";
 import { LeadForm } from "@/components/LeadForm";
 import { Reveal } from "@/components/Reveal";
-import { SectionHeading } from "@/components/SectionHeading";
-import { Icon, type IconName } from "@/components/Icon";
-import { eur } from "@/lib/site";
 
 export const metadata: Metadata = { title: "Inspection avant achat" };
 
-const checks: [IconName, string, string][] = [
-  ["gear", "Mécanique", "Moteur, boîte, embrayage, freinage, trains roulants, fuites."],
-  ["shield", "Carrosserie & châssis", "Épaisseur de peinture, traces de choc, corrosion, alignements."],
-  ["bolt", "Électronique", "Lecture des codes défaut, équipements, batterie (électrique/hybride)."],
-  ["search", "Historique", "Carnet d'entretien, factures, contrôle technique, cohérence kilométrique."],
-  ["gauge", "Essai routier", "Comportement, bruits, vibrations, passage des rapports."],
-  ["key", "Administratif", "Carte grise, situation administrative, gage, rappels constructeur."],
+const checks: [string, string][] = [
+  ["Mécanique", "Moteur, boîte de vitesses, embrayage, freinage, suspensions, recherche de fuites."],
+  ["Carrosserie et châssis", "Traces de réparation, mesure de l'épaisseur de peinture, corrosion, alignement des éléments."],
+  ["Électronique", "Lecture des codes défaut, fonctionnement des équipements, état de la batterie."],
+  ["Historique", "Carnet d'entretien, factures, contrôle technique, cohérence du kilométrage."],
+  ["Essai sur route", "Comportement, bruits, vibrations, passage des rapports."],
+  ["Documents", "Certificat d'immatriculation, situation administrative, rappels constructeur."],
 ];
-const plans = [
-  { name: "Essentiel", price: 149, items: ["Inspection 100 points", "Rapport photo", "Avis d'expert"] },
-  { name: "Premium", price: 249, items: ["Inspection 150 points", "Diagnostic électronique", "Essai routier", "Aide à la négociation"], best: true },
-  { name: "Accompagnement", price: 390, items: ["Formule Premium", "Présence le jour de l'achat", "Vérification des documents", "Assistance administrative"] },
+const offers = [
+  { name: "Inspection", text: "Nous examinons le véhicule et vous remettons un compte rendu détaillé avec photos et notre avis.", items: ["Contrôle complet du véhicule", "Essai sur route", "Compte rendu écrit et photos"] },
+  { name: "Accompagnement à l'achat", text: "En plus de l'inspection, nous restons à vos côtés jusqu'à la signature.", items: ["Inspection complète", "Aide à la négociation", "Vérification des documents", "Présence le jour de l'achat"] },
 ];
 
 export default function InspectionPage() {
   return (
     <>
-      <PageHero kicker="Inspection & Accompagnement" title="Achetez l'esprit serein" intro="Avant de signer, faites contrôler le véhicule par un expert indépendant. Partout dans les Alpes-Maritimes." />
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6">
-        <SectionHeading kicker="Ce que nous contrôlons" title="150 points, zéro surprise" />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {checks.map(([icon, t, d], i) => (
-            <Reveal key={t} delay={i * 60} className="rounded-3xl border border-line bg-coal p-7">
-              <Icon name={icon} className="size-7 text-ember" />
-              <h3 className="display mt-6 text-xl">{t}</h3>
-              <p className="mt-2 text-sm text-mute">{d}</p>
+      <PageHero eyebrow="Inspection" title="Faire inspecter un véhicule avant de l'acheter"
+        intro="Vous avez trouvé une voiture d'occasion ? Avant de vous engager, nous l'examinons pour vous et vous donnons un avis clair sur son état." />
+
+      <section className="mx-auto grid max-w-7xl gap-10 px-5 py-14 sm:px-8 md:py-20 lg:grid-cols-[1fr_1.6fr] lg:gap-16">
+        <Reveal>
+          <h2 className="text-2xl font-semibold md:text-[2rem]">Ce que nous vérifions</h2>
+          <p className="mt-3 leading-relaxed text-mute">Le contrôle est adapté au type de véhicule. Voici les principaux points examinés.</p>
+        </Reveal>
+        <dl className="grid border-t border-line sm:grid-cols-2 sm:gap-x-10">
+          {checks.map(([t, d], i) => (
+            <Reveal key={t} delay={i * 40} className="border-b border-line py-5">
+              <dt className="font-semibold">{t}</dt>
+              <dd className="mt-1 text-[0.9375rem] leading-relaxed text-mute">{d}</dd>
             </Reveal>
           ))}
+        </dl>
+      </section>
+
+      <section className="bg-white py-14 md:py-20">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8">
+          <h2 className="text-2xl font-semibold md:text-[2rem]">Deux formules</h2>
+          <p className="mt-3 text-mute">Tarif communiqué sur devis, selon le véhicule et le lieu de l&apos;inspection.</p>
+          <div className="mt-8 grid gap-6 md:grid-cols-2">
+            {offers.map((o, i) => (
+              <Reveal key={o.name} delay={i * 80} className="rounded-md border border-line p-6 md:p-8">
+                <h3 className="text-lg font-semibold">{o.name}</h3>
+                <p className="mt-2 leading-relaxed text-mute">{o.text}</p>
+                <ul className="mt-5 space-y-2 text-[0.9375rem] text-ink-2">
+                  {o.items.map((it) => <li key={it} className="flex gap-2.5"><span className="mt-2 size-1 shrink-0 rounded-full bg-ink" />{it}</li>)}
+                </ul>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
-      <section className="mx-auto max-w-7xl px-4 sm:px-6">
-        <SectionHeading kicker="Formules" title="Tarifs indicatifs" intro="Tarifs de démonstration, à adapter." />
-        <div className="grid gap-4 md:grid-cols-3">
-          {plans.map((p, i) => (
-            <Reveal key={p.name} delay={i * 90} className={`relative rounded-3xl border p-8 ${p.best ? "border-ember bg-ember/[0.06]" : "border-line bg-coal"}`}>
-              {p.best && <span className="absolute -top-3 left-8 rounded-full bg-ember px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-black">Recommandé</span>}
-              <h3 className="display text-xl">{p.name}</h3>
-              <p className="display mt-4 text-5xl">{eur(p.price)}</p>
-              <ul className="mt-6 space-y-2.5">
-                {p.items.map((it) => <li key={it} className="flex gap-3 text-sm text-mute"><Icon name="check" className="size-4 shrink-0 text-ember" />{it}</li>)}
-              </ul>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-      <section className="mx-auto mt-20 max-w-4xl px-4 sm:px-6">
-        <Reveal><h2 className="display mb-6 text-3xl">Réserver une inspection</h2></Reveal>
-        <Reveal delay={100}>
-          <LeadForm defaultSubject="inspection" subjects={["inspection"]} vehicleLabel="Véhicule à inspecter (lien annonce…)"
-            messagePlaceholder="Lieu du véhicule, formule souhaitée, disponibilités…" />
+
+      <section className="mx-auto mt-14 grid max-w-7xl gap-8 px-5 sm:px-8 md:mt-20 lg:grid-cols-[1fr_1.6fr] lg:gap-16">
+        <Reveal>
+          <h2 className="text-2xl font-semibold md:text-[2rem]">Demander une inspection</h2>
+          <p className="mt-3 leading-relaxed text-mute">Indiquez le véhicule (un lien vers l&apos;annonce suffit), l&apos;endroit où il se trouve et vos disponibilités.</p>
+        </Reveal>
+        <Reveal delay={80}>
+          <LeadForm defaultSubject="inspection" subjects={["inspection"]} vehicleLabel="Véhicule ou lien de l'annonce" />
         </Reveal>
       </section>
     </>

@@ -2,17 +2,18 @@ import type { Metadata } from "next";
 import { vehicles } from "@/lib/repositories";
 import { PageHero } from "@/components/PageHero";
 import { CatalogView } from "@/components/CatalogView";
-import { CtaBand } from "@/components/CtaBand";
+import { ContactBand } from "@/components/ContactBand";
 
-export const metadata: Metadata = { title: "Location" };
+export const metadata: Metadata = { title: "Location de véhicules", description: "Location de voitures à Nice, à la journée ou à la semaine." };
 
 export default async function LocationPage() {
   const [list, brands] = await Promise.all([vehicles.list({ listingType: "rental" }), vehicles.brands("rental")]);
   return (
     <>
-      <PageHero kicker="Location" title="Rouler la Riviera" intro="Location courte et moyenne durée. Livraison à Nice, à l'aéroport Nice Côte d'Azur ou à votre hôtel." />
+      <PageHero eyebrow="Louer" title="Location de véhicules"
+        intro="À la journée ou à la semaine. Indiquez-nous vos dates : nous vous confirmons la disponibilité et les conditions de location." />
       <CatalogView vehicles={list} brands={brands} listingType="rental" />
-      <CtaBand title="Un événement, un séjour ?" text="Mariage, tournage, séminaire : nous composons votre flotte sur-mesure." />
+      <ContactBand title="Une demande particulière ?" text="Location longue durée, plusieurs véhicules, événement : décrivez-nous votre besoin et nous étudions la meilleure solution." />
     </>
   );
 }

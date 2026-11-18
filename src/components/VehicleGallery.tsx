@@ -1,61 +1,73 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Icon } from "./Icon";
 
 export function VehicleGallery({ images, title }: { images: string[]; title: string }) {
   const [i, setI] = useState(0);
   const [zoom, setZoom] = useState(false);
+  const touchX = useRef<number | null>(null);
   const go = (d: number) => setI((p) => (p + d + images.length) % images.length);
+  const swipe = {
+    onTouchStart: (e: React.TouchEvent) => { touchX.current = e.touches[0].clientX; },
+    onTouchEnd: (e: React.TouchEvent) => {
+      if (touchX.current === null) return;
+      const dx = e.changedTouches[0].clientX - touchX.current;
+      if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
+      touchX.current = null;
+    },
+  };
 
   useEffect(() => {
     if (!zoom) return;
+    document.body.style.overflow = "hidden";
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setZoom(false);
       if (e.key === "ArrowRight") go(1);
       if (e.key === "ArrowLeft") go(-1);
     };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    return () => { window.removeEventListener("keydown", onKey); document.body.style.overflow = ""; };
   });
 
-  const Nav = ({ className = "" }) => (
-    <div className={`flex gap-2 ${className}`}>
+  const Arrows = ({ dark = false }) => (
+    <>
       {[-1, 1].map((d) => (
         <button key={d} onClick={(e) => { e.stopPropagation(); go(d); }} aria-label={d < 0 ? "Photo précédente" : "Photo suivante"}
-          className="grid size-11 place-items-center rounded-full border border-white/20 bg-black/50 backdrop-blur transition hover:bg-ember hover:text-black">
+          className={`absolute top-1/2 grid size-10 -translate-y-1/2 place-items-center rounded-full transition-opacity ${d < 0 ? "left-3" : "right-3"} ${dark ? "bg-white/10 text-white hover:bg-white/20" : "bg-white/90 text-ink opacity-100 shadow-sm hover:bg-white md:opacity-0 md:group-hover:opacity-100"}`}>
           <Icon name="arrow" className={`size-4 ${d < 0 ? "rotate-180" : ""}`} />
         </button>
       ))}
-    </div>
+    </>
   );
 
   return (
     <div>
-      <div className="group relative aspect-[16/10] cursor-zoom-in overflow-hidden rounded-3xl border border-line bg-coal" onClick={() => setZoom(true)}>
+      <div className="group relative aspect-[3/2] cursor-zoom-in touch-pan-y overflow-hidden rounded-md bg-sand" onClick={() => setZoom(true)} {...swipe}>
         {images.map((src, n) => (
           // eslint-disable-next-line @next/next/no-img-element
-          <img key={src} src={src} alt={`${title} — photo ${n + 1}`}
-            className={`absolute inset-0 size-full object-cover transition-all duration-700 ease-[cubic-bezier(.16,1,.3,1)] ${n === i ? "scale-100 opacity-100" : "scale-105 opacity-0"}`} />
+          <img key={src} src={src} alt={`${title}, photo ${n + 1} sur ${images.length}`} width={1600} height={1000} decoding="async"
+            fetchPriority={n === 0 ? "high" : "low"}
+            className={`absolute inset-0 size-full object-cover transition-opacity duration-300 ${n === i ? "opacity-100" : "opacity-0"}`} />
         ))}
-        <Nav className="absolute right-4 bottom-4" />
-        <span className="absolute bottom-4 left-4 rounded-full bg-black/60 px-3 py-1 text-xs backdrop-blur">{i + 1} / {images.length}</span>
+        <Arrows />
+        <span className="absolute right-3 bottom-3 rounded bg-black/55 px-2 py-0.5 text-xs text-white tabular-nums">{i + 1} / {images.length}</span>
       </div>
-      <div className="mt-3 grid grid-cols-4 gap-3">
+      <div className="mt-2.5 grid grid-cols-4 gap-2.5">
         {images.map((src, n) => (
-          <button key={src} onClick={() => setI(n)} aria-label={`Voir la photo ${n + 1}`}
-            className={`aspect-[16/10] overflow-hidden rounded-xl border-2 transition ${n === i ? "border-ember" : "border-transparent opacity-60 hover:opacity-100"}`}>
+          <button key={src} onClick={() => setI(n)} aria-label={`Afficher la photo ${n + 1}`} aria-current={n === i}
+            className={`aspect-[3/2] overflow-hidden rounded bg-sand transition-opacity ${n === i ? "ring-2 ring-ink ring-offset-2 ring-offset-paper" : "opacity-60 hover:opacity-100"}`}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={src} alt="" className="size-full object-cover" />
+            <img src={src} alt="" width={160} height={100} loading="lazy" decoding="async" className="size-full object-cover" />
           </button>
         ))}
       </div>
 
       {zoom && (
-        <div className="fixed inset-0 z-[60] grid place-items-center bg-black/95 p-4" onClick={() => setZoom(false)} role="dialog" aria-modal="true">
+        <div className="fixed inset-0 z-[60] grid place-items-center bg-black/95 p-4" onClick={() => setZoom(false)} role="dialog" aria-modal="true" aria-label={title} {...swipe}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={images[i]} alt={title} className="max-h-[80vh] w-full max-w-6xl rounded-2xl object-contain" />
-          <button aria-label="Fermer" className="absolute top-4 right-4 grid size-11 place-items-center rounded-full border border-white/20"><Icon name="close" /></button>
-          <Nav className="absolute bottom-6 left-1/2 -translate-x-1/2" />
+          <img src={images[i]} alt={title} className="max-h-[85vh] w-full max-w-6xl object-contain" />
+          <button aria-label="Fermer" className="absolute top-4 right-4 grid size-11 place-items-center rounded-full text-white hover:bg-white/10"><Icon name="close" /></button>
+          <Arrows dark />
         </div>
       )}
     </div>

@@ -15,13 +15,6 @@ const SHAPES: Record<string, { x0: number; x1: number; belt: number; roof: numbe
   "Citadine":  { x0: 300, x1: 1300, belt: 535, roof: 385, r0: 600, r1: 1070, tail: 1250 },
   "Break":     { x0: 170, x1: 1430, belt: 540, roof: 400, r0: 610, r1: 1270, tail: 1390 },
 };
-const SCENES = [
-  { bg: ["#1b1d22", "#0a0a0b"], floor: "#141518", glow: "#ffffff", label: "Studio" },
-  { bg: ["#ff7a3d", "#3a1a2e"], floor: "#2a1622", glow: "#ffb37a", label: "Riviera" },
-  { bg: ["#0b1530", "#050608"], floor: "#0a0f1e", glow: "#3d7bff", label: "Nuit" },
-  { bg: ["#d9d4ca", "#a8a397"], floor: "#bfb9ad", glow: "#ffffff", label: "Atelier" },
-];
-
 function shade(hex: string, amt: number) {
   const n = parseInt(hex.slice(1), 16);
   const c = [n >> 16, (n >> 8) & 255, n & 255].map((v) => Math.max(0, Math.min(255, Math.round(v + amt))));
@@ -47,40 +40,43 @@ function car(color: string, body: string) {
   return `
   <defs>
     <linearGradient id="paint" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="${shade(color, 55)}"/><stop offset=".45" stop-color="${color}"/><stop offset="1" stop-color="${shade(color, -60)}"/>
+      <stop offset="0" stop-color="${shade(color, 30)}"/><stop offset=".5" stop-color="${color}"/><stop offset="1" stop-color="${shade(color, -35)}"/>
     </linearGradient>
     <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#3a414c"/><stop offset=".5" stop-color="#0d1016"/><stop offset="1" stop-color="#232a35"/>
     </linearGradient>
     <radialGradient id="rim"><stop offset="0" stop-color="#9aa0a8"/><stop offset="1" stop-color="#3b3f45"/></radialGradient>
   </defs>
-  <ellipse cx="800" cy="${yb + 30}" rx="720" ry="36" fill="#000" opacity=".55"/>
+  <ellipse cx="800" cy="${yb + 28}" rx="700" ry="30" fill="#000" opacity=".18"/>
   <path d="${path}" fill="url(#paint)"/>
   <path d="${glass}" fill="url(#glass)"/>
-  <path d="M${s.x0 + 90},${s.belt + 45} L${s.x1 - 60},${s.belt + 50}" stroke="${shade(color, 90)}" stroke-opacity=".5" stroke-width="4"/>
-  <rect x="${s.x0 - 4}" y="${s.belt + 40}" width="60" height="16" rx="8" fill="#fff7e0" opacity=".9"/>
-  <rect x="${s.x1 - 52}" y="${s.belt + 34}" width="50" height="14" rx="7" fill="#ff2a2a" opacity=".9"/>
+  <path d="M${s.x0 + 90},${s.belt + 45} L${s.x1 - 60},${s.belt + 50}" stroke="${shade(color, 60)}" stroke-opacity=".35" stroke-width="3"/>
+  <rect x="${s.x0 - 4}" y="${s.belt + 40}" width="60" height="16" rx="8" fill="#f4f1ea" opacity=".9"/>
+  <rect x="${s.x1 - 52}" y="${s.belt + 34}" width="50" height="14" rx="7" fill="#9c1c1c" opacity=".85"/>
   ${wheel(w1)}${wheel(w2)}`;
 }
 
+// Fond studio neutre, sans effets : visuel provisoire en attendant les vraies photos.
+const VIEWS = [
+  { viewBox: "0 0 1600 1000", flip: false },
+  { viewBox: "0 0 1600 1000", flip: true },
+  { viewBox: "120 330 900 562", flip: false },
+  { viewBox: "580 330 900 562", flip: false },
+];
+
 function svg(v: (typeof demoVehicles)[number], i: number) {
-  const sc = SCENES[i];
+  const view = VIEWS[i];
   const color = COLORS[v.color] ?? "#888";
-  const flip = i === 2 ? `transform="translate(1600 0) scale(-1 1)"` : "";
-  const zoom = i === 3 ? `viewBox="250 280 900 562"` : `viewBox="0 0 1600 1000"`;
-  const dark = i !== 3;
-  return `<svg xmlns="http://www.w3.org/2000/svg" ${zoom} width="1600" height="1000">
+  const [x, y, w, h] = view.viewBox.split(" ").map(Number);
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${view.viewBox}" width="1600" height="1000">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${sc.bg[0]}"/><stop offset="1" stop-color="${sc.bg[1]}"/></linearGradient>
-    <radialGradient id="spot" cx=".5" cy=".55" r=".55"><stop offset="0" stop-color="${sc.glow}" stop-opacity=".35"/><stop offset="1" stop-color="${sc.glow}" stop-opacity="0"/></radialGradient>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eeede9"/><stop offset="1" stop-color="#e2e0db"/></linearGradient>
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9d7d1"/><stop offset="1" stop-color="#cfcdc6"/></linearGradient>
   </defs>
-  <rect x="-200" y="-200" width="2000" height="1400" fill="url(#bg)"/>
-  ${i === 1 ? `<circle cx="1200" cy="470" r="120" fill="#ffd29a" opacity=".8"/><rect x="-200" y="600" width="2000" height="400" fill="#1d2d52" opacity=".55"/>` : ""}
-  <rect x="-200" y="765" width="2000" height="500" fill="${sc.floor}"/>
-  <ellipse cx="800" cy="560" rx="820" ry="380" fill="url(#spot)"/>
-  ${i === 2 ? `<rect x="-200" y="766" width="2000" height="3" fill="#3d7bff" opacity=".8"/>` : ""}
-  <g ${flip}>${car(color, v.bodyType)}</g>
-  <text x="${i === 3 ? 280 : 60}" y="${i === 3 ? 320 : 80}" font-family="Arial, sans-serif" font-size="${i === 3 ? 18 : 26}" letter-spacing="6" fill="${dark ? "#fff" : "#111"}" opacity=".6">IRONCAR · VISUEL DE DÉMONSTRATION</text>
+  <rect x="-200" y="-200" width="2000" height="1400" fill="url(#wall)"/>
+  <rect x="-200" y="765" width="2000" height="500" fill="url(#floor)"/>
+  <g ${view.flip ? `transform="translate(1600 0) scale(-1 1)"` : ""}>${car(color, v.bodyType)}</g>
+  <text x="${x + w - 24 * (w / 1600)}" y="${y + h - 24 * (h / 1000)}" text-anchor="end" font-family="Helvetica, Arial, sans-serif" font-size="${22 * (w / 1600)}" fill="#8a8882">Visuel provisoire · photo à venir</text>
 </svg>`;
 }
 

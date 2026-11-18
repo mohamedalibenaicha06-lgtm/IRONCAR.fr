@@ -2,26 +2,27 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { Icon, type IconName } from "./Icon";
 
-type Variant = "primary" | "ghost" | "whatsapp";
+type Variant = "primary" | "secondary" | "whatsapp" | "link";
 const styles: Record<Variant, string> = {
-  primary: "bg-ember text-black hover:bg-ember-2",
-  ghost: "border border-line text-ivory hover:border-ivory/40 hover:bg-white/5",
-  whatsapp: "bg-[#25D366] text-black hover:brightness-110",
+  primary: "bg-ink text-white hover:bg-ink-2",
+  secondary: "border border-ink/15 bg-white text-ink hover:border-ink/40",
+  whatsapp: "bg-[#1fa855] text-white hover:bg-[#1a9549]",
+  link: "!px-0 !h-auto text-ink underline decoration-ink/25 underline-offset-4 hover:decoration-ink",
 };
 
-export function Button({ href, children, variant = "primary", icon, className = "", external }: {
-  href: string; children: ReactNode; variant?: Variant; icon?: IconName; className?: string; external?: boolean;
+export function Button({ href, children, variant = "primary", icon, arrow, className = "", external }: {
+  href: string; children: ReactNode; variant?: Variant; icon?: IconName; arrow?: boolean; className?: string; external?: boolean;
 }) {
-  const cls = `shine group inline-flex items-center justify-center gap-2.5 rounded-full px-6 py-3.5 text-sm font-semibold tracking-wide transition-all duration-300 active:scale-[.97] ${styles[variant]} ${className}`;
+  const cls = `group inline-flex h-12 items-center justify-center gap-2 rounded-md px-5 text-[0.9375rem] font-medium transition-colors duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${styles[variant]} ${className}`;
   const inner = (
     <>
-      {icon && <Icon name={icon} className="size-4.5" />}
+      {icon && <Icon name={icon} className="size-[18px]" />}
       <span>{children}</span>
-      {!icon && <Icon name="arrow" className="size-4 transition-transform duration-300 group-hover:translate-x-1" />}
+      {arrow && <Icon name="arrow" className="size-4 transition-transform duration-200 group-hover:translate-x-0.5" />}
     </>
   );
   return external ? (
-    <a href={href} target="_blank" rel="noopener noreferrer" className={cls}>{inner}</a>
+    <a href={href} target={href.startsWith("http") ? "_blank" : undefined} rel="noopener noreferrer" className={cls}>{inner}</a>
   ) : (
     <Link href={href} className={cls}>{inner}</Link>
   );
