@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "./Icon";
+import { MediaSlot } from "./MediaSlot";
 
 export function VehicleGallery({ images, title }: { images: string[]; title: string }) {
   const [i, setI] = useState(0);
@@ -33,16 +34,24 @@ export function VehicleGallery({ images, title }: { images: string[]; title: str
     <>
       {[-1, 1].map((d) => (
         <button key={d} onClick={(e) => { e.stopPropagation(); go(d); }} aria-label={d < 0 ? "Photo précédente" : "Photo suivante"}
-          className={`absolute top-1/2 grid size-10 -translate-y-1/2 place-items-center rounded-full transition-opacity ${d < 0 ? "left-3" : "right-3"} ${dark ? "bg-white/10 text-white hover:bg-white/20" : "bg-white/90 text-ink opacity-100 shadow-sm hover:bg-white md:opacity-0 md:group-hover:opacity-100"}`}>
+          className={`absolute top-1/2 grid size-10 -translate-y-1/2 place-items-center rounded-full transition-opacity ${d < 0 ? "left-3" : "right-3"} ${dark ? "bg-white/10 text-white hover:bg-white/20" : "bg-black/60 text-ink opacity-100 shadow-sm hover:bg-coal md:opacity-0 md:group-hover:opacity-100"}`}>
           <Icon name="arrow" className={`size-4 ${d < 0 ? "rotate-180" : ""}`} />
         </button>
       ))}
     </>
   );
 
+  if (images.length === 0) {
+    return (
+      <div className="aspect-[3/2] overflow-hidden rounded-lg border border-line">
+        <MediaSlot slot={{ alt: title }} label={title.split(" ").slice(-1)[0]} priority />
+      </div>
+    );
+  }
+
   return (
     <div>
-      <div className="group relative aspect-[3/2] cursor-zoom-in touch-pan-y overflow-hidden rounded-md bg-sand" onClick={() => setZoom(true)} {...swipe}>
+      <div className="group relative aspect-[3/2] cursor-zoom-in touch-pan-y overflow-hidden rounded-lg bg-sand" onClick={() => setZoom(true)} {...swipe}>
         {images.map((src, n) => (
           // eslint-disable-next-line @next/next/no-img-element
           <img key={src} src={src} alt={`${title}, photo ${n + 1} sur ${images.length}`} width={1600} height={1000} decoding="async"

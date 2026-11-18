@@ -1,7 +1,6 @@
 import type { Vehicle } from "@/types/vehicle";
 
 /** Données FICTIVES de démonstration — remplacées par Supabase à terme. */
-const img = (slug: string) => [1, 2, 3, 4].map((n) => `/demo/${slug}-${n}.svg`);
 
 type Seed = Omit<Vehicle, "id" | "images" | "isDemo" | "createdAt" | "status" | "featured"> &
   Partial<Pick<Vehicle, "status" | "featured">>;
@@ -77,7 +76,8 @@ export const demoVehicles: Vehicle[] = seeds.map((s, i) => ({
   featured: false,
   ...s,
   id: `demo-${i + 1}`,
-  images: img(s.slug),
+  // Aucune photo : ajouter ici des URL de photos autorisées (ou via Supabase Storage).
+  images: [],
   isDemo: true,
   createdAt: new Date(Date.UTC(2026, 9, 1 + i)).toISOString(),
 }));

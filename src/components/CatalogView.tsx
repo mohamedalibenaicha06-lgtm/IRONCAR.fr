@@ -16,7 +16,7 @@ function Select({ label, value, onChange, options }: {
       <span className="text-[0.8125rem] text-mute">{label}</span>
       <span className="relative">
         <select value={value} onChange={(e) => onChange(e.target.value)}
-          className="h-11 w-full appearance-none rounded-md border border-line bg-white pr-9 pl-3 text-base text-ink outline-none transition-colors hover:border-ink/30 focus:border-ink md:text-[0.9375rem]">
+          className="h-11 w-full appearance-none rounded-md border border-line bg-coal pr-9 pl-3 text-base text-ink outline-none transition-colors hover:border-ink/30 focus:border-ink md:text-[0.9375rem]">
           {options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
         </select>
         <Icon name="arrow" className="pointer-events-none absolute top-1/2 right-3 size-3.5 -translate-y-1/2 rotate-90 text-mute" />
@@ -41,10 +41,10 @@ export function CatalogView({ vehicles, brands, listingType }: { vehicles: Vehic
         <div className="relative flex-1">
           <Icon name="search" className="absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-mute" />
           <input value={f.query ?? ""} onChange={(e) => set("query")(e.target.value)} placeholder="Marque ou modèle" aria-label="Rechercher"
-            className="h-11 w-full rounded-md border border-line bg-white pr-4 pl-10 text-base outline-none transition-colors placeholder:text-mute hover:border-ink/30 focus:border-ink md:text-[0.9375rem]" />
+            className="h-11 w-full rounded-md border border-line bg-coal pr-4 pl-10 text-base outline-none transition-colors placeholder:text-mute hover:border-ink/30 focus:border-ink md:text-[0.9375rem]" />
         </div>
         <button onClick={() => setOpen((o) => !o)} aria-expanded={open}
-          className="flex h-11 items-center gap-2 rounded-md border border-line bg-white px-4 text-[0.9375rem] md:hidden">
+          className="flex h-11 items-center gap-2 rounded-md border border-line bg-coal px-4 text-[0.9375rem] md:hidden">
           <Icon name="filter" className="size-4" /> Filtres{activeCount > 0 && ` (${activeCount})`}
         </button>
       </div>

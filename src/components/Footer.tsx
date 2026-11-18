@@ -4,7 +4,7 @@ import { Logo } from "./Header";
 
 export function Footer() {
   return (
-    <footer className="mt-24 bg-ink text-white/70 md:mt-32">
+    <footer className="mt-24 border-t border-line bg-coal text-ink-2 md:mt-32">
       <div className="mx-auto grid max-w-7xl gap-10 px-5 py-14 sm:px-8 md:grid-cols-[1.4fr_1fr_1fr] md:py-16">
         <div>
           <Logo light />

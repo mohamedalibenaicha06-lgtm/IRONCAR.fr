@@ -39,7 +39,7 @@ export default function InspectionPage() {
         </dl>
       </section>
 
-      <section className="bg-white py-14 md:py-20">
+      <section className="bg-coal py-14 md:py-20">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
           <h2 className="text-2xl font-semibold md:text-[2rem]">Deux formules</h2>
           <p className="mt-3 text-mute">Tarif communiqué sur devis, selon le véhicule et le lieu de l&apos;inspection.</p>
@@ -49,7 +49,7 @@ export default function InspectionPage() {
                 <h3 className="text-lg font-semibold">{o.name}</h3>
                 <p className="mt-2 leading-relaxed text-mute">{o.text}</p>
                 <ul className="mt-5 space-y-2 text-[0.9375rem] text-ink-2">
-                  {o.items.map((it) => <li key={it} className="flex gap-2.5"><span className="mt-2 size-1 shrink-0 rounded-full bg-ink" />{it}</li>)}
+                  {o.items.map((it) => <li key={it} className="flex gap-2.5"><span className="mt-2 size-1 shrink-0 rounded-full bg-accent" />{it}</li>)}
                 </ul>
               </Reveal>
             ))}

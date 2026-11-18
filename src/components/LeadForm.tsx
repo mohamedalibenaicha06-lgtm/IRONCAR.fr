@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { leadSubjects, submitLead, type LeadSubject } from "@/lib/leads";
 import { Icon } from "./Icon";
 
-const field = "h-12 w-full rounded-md border border-line bg-white px-3.5 text-base text-ink outline-none transition-colors placeholder:text-mute/80 hover:border-ink/30 focus:border-ink";
+const field = "h-12 w-full rounded-md border border-line bg-coal px-3.5 text-base text-ink outline-none transition-colors placeholder:text-mute/80 hover:border-ink/30 focus:border-ink";
 const lbl = "mb-1.5 block text-[0.8125rem] text-mute";
 
 export function LeadForm({ defaultSubject = "autre", vehicle = "", subjects, messagePlaceholder = "", vehicleLabel = "Véhicule concerné" }: {
@@ -30,7 +30,7 @@ export function LeadForm({ defaultSubject = "autre", vehicle = "", subjects, mes
   }
 
   return (
-    <form onSubmit={onSubmit} className="grid gap-4 rounded-md border border-line bg-white p-5 sm:grid-cols-2 sm:p-8">
+    <form onSubmit={onSubmit} className="grid gap-4 rounded-md border border-line bg-coal p-5 sm:grid-cols-2 sm:p-8">
       <label className="sm:col-span-2">
         <span className={lbl}>Objet de votre demande</span>
         <select key={defaultSubject} name="subject" defaultValue={defaultSubject} className={field}>
@@ -43,7 +43,7 @@ export function LeadForm({ defaultSubject = "autre", vehicle = "", subjects, mes
       <label><span className={lbl}>{vehicleLabel}</span><input key={vehicle} name="vehicle" defaultValue={vehicle} className={field} /></label>
       <label className="sm:col-span-2"><span className={lbl}>Message *</span><textarea name="message" required rows={5} placeholder={messagePlaceholder} className={`${field} h-auto py-3`} /></label>
       <div className="flex flex-col gap-3 sm:col-span-2 sm:flex-row">
-        <button type="submit" value="whatsapp" className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-md bg-ink px-5 text-[0.9375rem] font-medium text-white transition-colors hover:bg-ink-2">
+        <button type="submit" value="whatsapp" className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-md bg-ink px-5 text-[0.9375rem] font-semibold text-paper transition-colors hover:bg-white">
           <Icon name="whatsapp" className="size-4" /> Envoyer via WhatsApp
         </button>
         <button type="submit" value="email" className="inline-flex h-12 flex-1 items-center justify-center gap-2 rounded-md border border-ink/15 px-5 text-[0.9375rem] font-medium transition-colors hover:border-ink/40">

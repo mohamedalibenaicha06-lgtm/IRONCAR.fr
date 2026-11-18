@@ -26,8 +26,13 @@
 - Profondeur au défilement en CSS natif (ordinateur), en-tête transparent sur l'accueil, transitions de page adoucies
 - Média remplaçable dans `src/lib/site.ts` (`heroMedia`, vidéo optionnelle)
 
+## ✅ v0.5 — Identité sombre et sportive
+- Noir / anthracite / blanc cassé / rouge racing ; titres Saira Condensed, texte Inter
+- Accueil « ACHETEZ. VENDEZ. ROULEZ. » mot par mot, 4 cartes services asymétriques, menu mobile plein écran
+- Photo du G 63 et illustrations dessinées supprimées : emplacements photo sobres (`media` dans `src/lib/site.ts`, `images` des véhicules)
+
 ## ⏳ À faire
-- [ ] **Droits de la photo du G 63** à confirmer (visuel d'origine constructeur probable) ou à remplacer par une photo propre, idéalement ≥ 2560 px
+- [ ] **Fournir des photos autorisées** : véhicule vedette, 4 services, véhicules (fond sombre idéalement)
 - [ ] **Vraies photos des véhicules** (non téléchargeables depuis l'environnement de travail)
 - [ ] Remplacer coordonnées/adresse/WhatsApp fictifs (`src/lib/site.ts`)
 - [ ] Supabase : tables `vehicles`, `leads`, Storage photos, `supabaseVehicleRepository`

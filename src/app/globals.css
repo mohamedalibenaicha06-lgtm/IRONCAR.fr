@@ -1,128 +1,106 @@
 @import "tailwindcss";
 @import "@fontsource-variable/inter/index.css";
+@import "@fontsource/saira-condensed/600.css";
+@import "@fontsource/saira-condensed/700.css";
+@import "@fontsource/saira-condensed/800.css";
 
+/* Direction : nuit de circuit — noir profond, anthracite, blanc cassé, rouge racing avec parcimonie. */
 @theme {
-  --color-paper: #fafaf8;
-  --color-sand: #f1f0ec;
-  --color-ink: #141414;
-  --color-ink-2: #3b3b3a;
-  --color-mute: #6d6c68;
-  --color-line: #e3e1dc;
-  --color-accent: #1e3a5c;
+  --color-paper: #090909;
+  --color-coal: #121212;
+  --color-sand: #171717;
+  --color-ink: #f2efea;
+  --color-ink-2: #c9c5be;
+  --color-mute: #8e8a84;
+  --color-line: #262626;
+  --color-accent: #e53935;
   --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: "Saira Condensed", "Arial Narrow", "Inter Variable", sans-serif;
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-brake: cubic-bezier(0.12, 0.9, 0.2, 1);
 }
 
-html { scroll-behavior: smooth; overflow-x: clip; -webkit-text-size-adjust: 100%; }
+html { scroll-behavior: smooth; overflow-x: clip; -webkit-text-size-adjust: 100%; color-scheme: dark; }
 body {
   background: var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-sans);
-  font-feature-settings: "cv11", "ss01";
   -webkit-font-smoothing: antialiased;
   overflow-x: clip;
 }
 ::selection { background: var(--color-accent); color: #fff; }
-h1, h2, h3 { letter-spacing: -0.022em; text-wrap: balance; }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; letter-spacing: 0.005em; line-height: 0.95; text-wrap: balance; }
 p { text-wrap: pretty; }
 
-.eyebrow { font-size: 0.8125rem; font-weight: 500; color: var(--color-mute); letter-spacing: 0.01em; }
+.eyebrow { font-family: var(--font-display); font-size: 0.875rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--color-mute); }
+.eyebrow-accent { color: var(--color-accent); }
 
-/* Apparition discrète au scroll */
-.reveal { opacity: 0; transform: translateY(12px); transition: opacity .6s var(--ease-out-soft), transform .6s var(--ease-out-soft); transition-delay: var(--d, 0ms); }
+/* Apparition au défilement */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s var(--ease-out-soft), transform .7s var(--ease-out-soft); transition-delay: var(--d, 0ms); }
 .reveal[data-visible="true"] { opacity: 1; transform: none; }
 
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
-  .reveal { opacity: 1; transform: none; }
-}
-
-/* ===== Accueil cinématique ===== */
-:root { --intro: 0s; --ease-cine: cubic-bezier(0.16, 1, 0.3, 1); }
-html[data-intro="play"] { --intro: 1.05s; }
-
-/* Rideau + logo (première visite uniquement) */
-.intro-curtain { display: none; }
-.studio-bg { background-image: var(--studio); background-size: 100% 100%; }
-@media (min-width: 1280px) { .studio-bg { background-image: none; } }
-html[data-intro="play"] .intro-curtain { display: grid; animation: curtain-up .9s var(--ease-cine) 1.05s both; }
-html[data-intro="play"] .intro-logo { animation: logo-in .9s var(--ease-cine) .1s both; }
-@keyframes curtain-up { to { transform: translateY(-100%); visibility: hidden; } }
-@keyframes logo-in { from { opacity: 0; letter-spacing: .6em; } to { opacity: 1; letter-spacing: .3em; } }
-
-/* Révélation du véhicule : léger travelling arrière */
-.hero-media { animation: car-reveal 2.4s var(--ease-cine) both; animation-delay: var(--intro); transform-origin: 50% 70%; }
-@keyframes car-reveal { from { opacity: 0; transform: scale(1.08); } to { opacity: 1; transform: none; } }
-
-/* Titre ligne par ligne */
-.line-mask { display: block; overflow: hidden; padding-bottom: .06em; margin-bottom: -.06em; }
-.hero-line { display: block; animation: line-up 1s var(--ease-cine) both; animation-delay: calc(var(--intro) + var(--d, 0s)); }
-@keyframes line-up { from { transform: translateY(105%); } to { transform: none; } }
-.hero-in { animation: soft-up .9s var(--ease-cine) both; animation-delay: calc(var(--intro) + var(--d, 0s)); }
-@keyframes soft-up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-
-/* Navigation qui se met en place après la révélation */
-html[data-intro="play"] .site-header { animation: header-in .8s var(--ease-cine) 2.3s both; }
-@keyframes header-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
-
-/* Profondeur au défilement (desktop, navigateurs compatibles, sans JS) */
-@media (min-width: 1280px) {
-  @supports (animation-timeline: view()) {
-    .hero-parallax { animation: hero-depth linear both; animation-timeline: view(); animation-range: exit 0% exit 100%; }
-    .hero-content { animation: hero-lift linear both; animation-timeline: view(); animation-range: exit 0% exit 80%; }
-    @keyframes hero-depth { to { transform: scale(1.06) translateY(4%); } }
-    @keyframes hero-lift { to { transform: translateY(-60px); opacity: 0; } }
-  }
-}
-
-/* Transitions de page */
-.page-enter { animation: page-in .45s var(--ease-cine) both; }
+.page-enter { animation: page-in .45s var(--ease-out-soft) both; }
 @keyframes page-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 
-@media (prefers-reduced-motion: reduce) {
-  .intro-curtain { display: none !important; }
-  .hero-parallax, .hero-content { animation: none !important; }
+/* Emplacement photo (aucune image inventée) : studio sombre, lumière douce, reflet au sol */
+.photo-slot {
+  position: relative; overflow: hidden; isolation: isolate;
+  background:
+    radial-gradient(55% 60% at 50% 18%, rgb(255 255 255 / .12), transparent 70%),
+    radial-gradient(40% 18% at 50% 64%, rgb(229 57 53 / .10), transparent 70%),
+    linear-gradient(180deg, #161616 0%, #0c0c0c 62%, #111 62.2%, #070707 100%);
 }
-html[data-intro="play"] .page-enter { animation: none; }
+.photo-slot::after {
+  content: ""; position: absolute; left: 8%; right: 8%; top: 62%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgb(229 57 53 / .55), transparent);
+}
 
-/* ===== Menu mobile : entrée « showroom » ===== */
-.menu-panel { transform: translateX(100%); visibility: hidden; transition: transform 200ms cubic-bezier(.4, 0, .9, .6), visibility 0s linear 200ms; will-change: transform; }
-.menu-panel[data-open="true"] { transform: none; visibility: visible; transition: transform 260ms cubic-bezier(.12, .9, .2, 1), visibility 0s; }
+/* ===== Accueil ===== */
+.word { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .04em; }
+.word > span { display: inline-block; animation: word-in .8s var(--ease-brake) both; animation-delay: var(--d, 0s); }
+@keyframes word-in { from { transform: translateY(105%) skewY(6deg); } to { transform: none; } }
+.fade-up { animation: fade-up .8s var(--ease-out-soft) both; animation-delay: var(--d, 0s); }
+@keyframes fade-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 
-/* Rubriques : arrivée rapide depuis l'extérieur, freinage net, léger dépassement puis stabilisation */
+/* Entrée du véhicule : arrive par la gauche et freine */
+.car-enter { animation: car-enter 1.4s var(--ease-brake) .35s both; }
+@keyframes car-enter { from { opacity: 0; transform: translateX(-14%); } 40% { opacity: 1; } to { opacity: 1; transform: none; } }
+
+@supports (animation-timeline: view()) {
+  .depth { animation: depth linear both; animation-timeline: view(); animation-range: exit 0% exit 100%; }
+  @keyframes depth { to { transform: translateY(10%) scale(1.04); } }
+}
+
+/* Cartes de services : zoom de l'image, réaction au toucher */
+.svc-media img, .svc-media .photo-slot { transition: transform .9s var(--ease-out-soft); }
+.svc:hover .svc-media img, .svc:hover .svc-media .photo-slot { transform: scale(1.05); }
+.svc:active { transform: scale(.985); }
+
+/* ===== Menu mobile plein écran ===== */
+.menu-panel { transform: translateY(-100%); visibility: hidden; transition: transform 220ms cubic-bezier(.4, 0, .9, .6), visibility 0s linear 220ms; will-change: transform; }
+.menu-panel[data-open="true"] { transform: none; visibility: visible; transition: transform 300ms var(--ease-brake), visibility 0s; }
 .menu-item { opacity: 0; transition: opacity 120ms ease-in, transform 160ms ease-in; }
 .menu-item.from-left { transform: translateX(-28px); }
 .menu-item.from-right { transform: translateX(28px); }
-[data-open="true"] .menu-item { opacity: 1; transform: none; transition: none; animation: drive-in 420ms cubic-bezier(.1, .8, .15, 1) both; animation-delay: calc(40ms + var(--i) * 55ms); }
-[data-open="true"] .menu-item.from-left { --from: -105vw; --brake: 7px; }
-[data-open="true"] .menu-item.from-right { --from: 105vw; --brake: -7px; }
+[data-open="true"] .menu-item { opacity: 1; transform: none; transition: none; animation: drive-in 440ms var(--ease-brake) both; animation-delay: calc(80ms + var(--i) * 55ms); }
+[data-open="true"] .menu-item.from-left { --from: -105vw; --brake: 8px; }
+[data-open="true"] .menu-item.from-right { --from: 105vw; --brake: -8px; }
 @keyframes drive-in {
   0% { transform: translateX(var(--from)); opacity: 1; }
   68% { transform: translateX(var(--brake)); }
   84% { transform: translateX(calc(var(--brake) * -0.3)); }
   100% { transform: none; opacity: 1; }
 }
-
 .menu-fade { opacity: 0; transition: opacity 120ms ease-in; }
-[data-open="true"] .menu-fade { opacity: 1; transition: opacity 240ms ease-out 260ms; }
+[data-open="true"] .menu-fade { opacity: 1; transition: opacity 260ms ease-out 360ms; }
+[data-menu-open="true"] .logo-mark { animation: logo-snap 280ms var(--ease-brake) both; }
+@keyframes logo-snap { from { opacity: .2; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
 
-/* Classe G : accélère depuis la droite, freine en douceur */
-.menu-car { opacity: 0; transform: translateX(40%); transition: opacity 120ms ease-in, transform 160ms ease-in; --m: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent), linear-gradient(to bottom, transparent, #000 12%, #000 88%, transparent); -webkit-mask-image: var(--m); mask-image: var(--m); -webkit-mask-composite: source-in; mask-composite: intersect; }
-[data-open="true"] .menu-car { opacity: 1; transform: none; transition: none; animation: car-arrive 560ms both 180ms; }
-@keyframes car-arrive {
-  0% { transform: translateX(55%); opacity: 0; animation-timing-function: cubic-bezier(.5, 0, .9, .4); }
-  35% { opacity: 1; animation-timing-function: cubic-bezier(.1, .7, .2, 1); }
-  45% { transform: translateX(8%); animation-timing-function: cubic-bezier(.15, .85, .25, 1); }
-  85% { transform: translateX(-1.2%); }
-  100% { transform: none; opacity: 1; }
-}
-
-/* Logo : apparition nette à l'ouverture */
-[data-menu-open="true"] .logo-mark { animation: logo-snap 280ms cubic-bezier(.12, .9, .2, 1) both; }
-@keyframes logo-snap { from { opacity: .2; transform: translateX(-10px); letter-spacing: .3em; } to { opacity: 1; transform: none; } }
+.press { transition: transform 150ms var(--ease-out-soft); }
+.press:active { transform: scale(.97); }
 
 @media (prefers-reduced-motion: reduce) {
-  .menu-panel, .menu-panel[data-open="true"] { transition: visibility 0s; }
-  .menu-item, .menu-car, .menu-fade { opacity: 1 !important; transform: none !important; }
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .reveal { opacity: 1; transform: none; }
+  .menu-item, .menu-fade { opacity: 1 !important; transform: none !important; }
 }

@@ -37,7 +37,7 @@ export function VehicleDetail({ v, related }: { v: Vehicle; related: Vehicle[] }
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       {/* Barre d'action fixe (mobile) */}
-      <div className="fixed inset-x-0 bottom-0 z-30 flex items-center gap-2.5 border-t border-line bg-white/95 px-4 pt-3 pb-[max(.75rem,env(safe-area-inset-bottom))] backdrop-blur lg:hidden">
+      <div className="fixed inset-x-0 bottom-0 z-30 flex items-center gap-2.5 border-t border-line bg-paper/85 px-4 pt-3 pb-[max(.75rem,env(safe-area-inset-bottom))] backdrop-blur lg:hidden">
         <div className="min-w-0 flex-1">
           <p className="truncate text-xs text-mute">{vehicleTitle(v)}</p>
           <VehiclePrice v={v} className="block text-base font-semibold" />
