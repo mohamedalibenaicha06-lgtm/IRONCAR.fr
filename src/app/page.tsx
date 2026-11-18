@@ -6,7 +6,7 @@ import { Icon } from "@/components/Icon";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
 import { VehicleCard } from "@/components/VehicleCard";
-import { DemoBadge } from "@/components/DemoBadge";
+import { HomeHero } from "@/components/HomeHero";
 
 const services = [
   { title: "Acheter", text: "Des véhicules d'occasion choisis avec soin, présentés avec toutes leurs caractéristiques.", href: "/achat", cta: "Voir les véhicules" },
@@ -23,43 +23,13 @@ const steps = [
 
 export default async function Home() {
   const [featured, rentals] = await Promise.all([vehicles.featured(3), vehicles.list({ listingType: "rental" })]);
-  const hero = featured[0];
   const rental = rentals[0];
   return (
     <>
-      {/* Introduction */}
-      <section className="bg-white">
-        <div className="mx-auto grid max-w-7xl items-center gap-10 px-5 pt-28 pb-14 sm:px-8 md:pt-36 lg:grid-cols-[1fr_1.15fr] lg:gap-14 lg:pb-20">
-          <div>
-            <p className="eyebrow mb-4">Nice et Alpes-Maritimes</p>
-            <h1 className="text-[2.25rem] font-semibold leading-[1.1] sm:text-5xl lg:text-[3.5rem]">Acheter, vendre ou louer une voiture à Nice</h1>
-            <p className="mt-5 max-w-lg text-[1.0625rem] leading-relaxed text-mute md:text-lg">
-              IRONCAR vous accompagne à chaque étape : choix du véhicule, vérifications, démarches et remise des clés. Un seul interlocuteur, joignable par téléphone ou WhatsApp.
-            </p>
-            <div className="mt-8 flex flex-col gap-2.5 sm:flex-row">
-              <Button href="/achat" arrow>Voir les véhicules</Button>
-              <Button href="/contact" variant="secondary">Nous contacter</Button>
-            </div>
-          </div>
-          {hero && (
-            <Link href={`/achat/${hero.slug}`} className="group relative block overflow-hidden rounded-md bg-sand">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={hero.images[0]} alt={`${hero.brand} ${hero.model}`} width={1600} height={1000} fetchPriority="high" decoding="async"
-                className="aspect-[3/2] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.015]" />
-              <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 bg-gradient-to-t from-black/45 to-transparent p-4 pt-12 text-white">
-                <div>
-                  <p className="text-sm font-medium">{hero.brand} {hero.model}</p>
-                  <p className="text-xs text-white/80">{hero.version}</p>
-                </div>
-                <DemoBadge />
-              </div>
-            </Link>
-          )}
-        </div>
-      </section>
+      <HomeHero />
 
       {/* Services */}
-      <section className="border-y border-line bg-white">
+      <section className="border-b border-line bg-white">
         <div className="mx-auto grid max-w-7xl gap-px bg-line sm:grid-cols-2 lg:grid-cols-4">
           {services.map((s, i) => (
             <Reveal key={s.title} delay={i * 60} className="bg-white">

@@ -32,10 +32,56 @@ p { text-wrap: pretty; }
 .reveal { opacity: 0; transform: translateY(12px); transition: opacity .6s var(--ease-out-soft), transform .6s var(--ease-out-soft); transition-delay: var(--d, 0ms); }
 .reveal[data-visible="true"] { opacity: 1; transform: none; }
 
-@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
-.page-enter { animation: fade-in .35s ease-out both; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
   .reveal { opacity: 1; transform: none; }
 }
+
+/* ===== Accueil cinématique ===== */
+:root { --intro: 0s; --ease-cine: cubic-bezier(0.16, 1, 0.3, 1); }
+html[data-intro="play"] { --intro: 1.05s; }
+
+/* Rideau + logo (première visite uniquement) */
+.intro-curtain { display: none; }
+.studio-bg { background-image: var(--studio); background-size: 100% 100%; }
+@media (min-width: 1280px) { .studio-bg { background-image: none; } }
+html[data-intro="play"] .intro-curtain { display: grid; animation: curtain-up .9s var(--ease-cine) 1.05s both; }
+html[data-intro="play"] .intro-logo { animation: logo-in .9s var(--ease-cine) .1s both; }
+@keyframes curtain-up { to { transform: translateY(-100%); visibility: hidden; } }
+@keyframes logo-in { from { opacity: 0; letter-spacing: .6em; } to { opacity: 1; letter-spacing: .3em; } }
+
+/* Révélation du véhicule : léger travelling arrière */
+.hero-media { animation: car-reveal 2.4s var(--ease-cine) both; animation-delay: var(--intro); transform-origin: 50% 70%; }
+@keyframes car-reveal { from { opacity: 0; transform: scale(1.08); } to { opacity: 1; transform: none; } }
+
+/* Titre ligne par ligne */
+.line-mask { display: block; overflow: hidden; padding-bottom: .06em; margin-bottom: -.06em; }
+.hero-line { display: block; animation: line-up 1s var(--ease-cine) both; animation-delay: calc(var(--intro) + var(--d, 0s)); }
+@keyframes line-up { from { transform: translateY(105%); } to { transform: none; } }
+.hero-in { animation: soft-up .9s var(--ease-cine) both; animation-delay: calc(var(--intro) + var(--d, 0s)); }
+@keyframes soft-up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+/* Navigation qui se met en place après la révélation */
+html[data-intro="play"] .site-header { animation: header-in .8s var(--ease-cine) 2.3s both; }
+@keyframes header-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+
+/* Profondeur au défilement (desktop, navigateurs compatibles, sans JS) */
+@media (min-width: 1280px) {
+  @supports (animation-timeline: view()) {
+    .hero-parallax { animation: hero-depth linear both; animation-timeline: view(); animation-range: exit 0% exit 100%; }
+    .hero-content { animation: hero-lift linear both; animation-timeline: view(); animation-range: exit 0% exit 80%; }
+    @keyframes hero-depth { to { transform: scale(1.06) translateY(4%); } }
+    @keyframes hero-lift { to { transform: translateY(-60px); opacity: 0; } }
+  }
+}
+
+/* Transitions de page */
+.page-enter { animation: page-in .45s var(--ease-cine) both; }
+@keyframes page-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-curtain { display: none !important; }
+  .hero-parallax, .hero-content { animation: none !important; }
+}
+html[data-intro="play"] .page-enter { animation: none; }

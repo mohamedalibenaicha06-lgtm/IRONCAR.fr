@@ -20,7 +20,14 @@
 - Fiches : tableau de caractéristiques, galerie avec glissement tactile ; formulaires avec libellés
 - Visuels de démo neutres « photo à venir » ; SEO : sitemap, robots, JSON-LD ; page contact statique
 
+## ✅ v0.4 — Accueil cinématique
+- Mercedes-AMG G 63 noir en vedette (photo fournie, studio éclairci et prolongé, WebP 26–47 Ko)
+- Introduction jouée une fois par session : rideau + logo → révélation du véhicule → titre ligne par ligne → actions → navigation
+- Profondeur au défilement en CSS natif (ordinateur), en-tête transparent sur l'accueil, transitions de page adoucies
+- Média remplaçable dans `src/lib/site.ts` (`heroMedia`, vidéo optionnelle)
+
 ## ⏳ À faire
+- [ ] **Droits de la photo du G 63** à confirmer (visuel d'origine constructeur probable) ou à remplacer par une photo propre, idéalement ≥ 2560 px
 - [ ] **Vraies photos des véhicules** (non téléchargeables depuis l'environnement de travail)
 - [ ] Remplacer coordonnées/adresse/WhatsApp fictifs (`src/lib/site.ts`)
 - [ ] Supabase : tables `vehicles`, `leads`, Storage photos, `supabaseVehicleRepository`

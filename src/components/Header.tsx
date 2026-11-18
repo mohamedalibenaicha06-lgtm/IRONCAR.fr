@@ -33,25 +33,27 @@ export function Header() {
   useEffect(() => setOpen(false), [pathname]);
   useEffect(() => { document.body.style.overflow = open ? "hidden" : ""; }, [open]);
 
+  // Sur l'accueil, l'en-tête est transparent tant que l'on n'a pas défilé : le véhicule occupe toute la scène.
+  const overlay = pathname === "/" && !scrolled && !open;
   const active = (href: string) => pathname === href || pathname.startsWith(href + "/");
   const tel = `tel:${site.phone.replace(/\s/g, "")}`;
 
   return (
     <>
-    <header className={`fixed inset-x-0 top-0 z-50 bg-white/95 backdrop-blur transition-shadow duration-300 ${scrolled || open ? "shadow-[0_1px_0_var(--color-line)]" : ""}`}>
+    <header className={`site-header fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow] duration-500 ${overlay ? "bg-transparent" : "bg-white/95 backdrop-blur"} ${scrolled || open ? "shadow-[0_1px_0_var(--color-line)]" : ""}`}>
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8 md:h-[72px]">
         <Logo />
         <nav className="hidden items-center gap-8 lg:flex" aria-label="Navigation principale">
           {nav.map((n) => (
             <Link key={n.href} href={n.href} aria-current={active(n.href) ? "page" : undefined}
-              className={`relative py-2 text-[0.9375rem] transition-colors ${active(n.href) ? "text-ink" : "text-mute hover:text-ink"}`}>
+              className={`relative py-2 text-[0.9375rem] transition-colors ${active(n.href) ? "text-ink" : overlay ? "text-ink-2 hover:text-ink" : "text-mute hover:text-ink"}`}>
               {n.label}
               {active(n.href) && <span className="absolute inset-x-0 -bottom-[13px] h-0.5 bg-ink" />}
             </Link>
           ))}
         </nav>
         <div className="flex items-center gap-3">
-          <a href={tel} className="hidden text-[0.9375rem] text-ink-2 hover:text-ink xl:inline">{site.phone}</a>
+          <a href={tel} className="hidden text-[0.9375rem] text-ink-2 transition-colors hover:text-ink xl:inline">{site.phone}</a>
           <Link href="/contact" className="hidden h-10 items-center rounded-md bg-ink px-4 text-sm font-medium text-white transition-colors hover:bg-ink-2 sm:inline-flex">
             Nous contacter
           </Link>

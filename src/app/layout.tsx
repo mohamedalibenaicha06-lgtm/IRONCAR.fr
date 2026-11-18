@@ -19,9 +19,15 @@ const dealerLd = {
   areaServed: "Alpes-Maritimes",
 };
 
+const introScript = `try{var d=document.documentElement,p=location.pathname==="/"&&!sessionStorage.getItem("ic-intro")&&!matchMedia("(prefers-reduced-motion: reduce)").matches;d.dataset.intro=p?"play":"seen";if(p){sessionStorage.setItem("ic-intro","1");setTimeout(function(){d.dataset.intro="seen"},3400)}}catch(e){}`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr">
+    <html lang="fr" suppressHydrationWarning>
+      <head>
+        {/* Introduction jouée une seule fois par session, uniquement en arrivant sur l'accueil */}
+        <script dangerouslySetInnerHTML={{ __html: introScript }} />
+      </head>
       <body>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(dealerLd) }} />
         <Header />
