@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff7a3d"/><stop offset="1" stop-color="#3a1a2e"/></linearGradient>
+    <radialGradient id="spot" cx=".5" cy=".55" r=".55"><stop offset="0" stop-color="#ffb37a" stop-opacity=".35"/><stop offset="1" stop-color="#ffb37a" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect x="-200" y="-200" width="2000" height="1400" fill="url(#bg)"/>
+  <circle cx="1200" cy="470" r="120" fill="#ffd29a" opacity=".8"/><rect x="-200" y="600" width="2000" height="400" fill="#1d2d52" opacity=".55"/>
+  <rect x="-200" y="765" width="2000" height="500" fill="#2a1622"/>
+  <ellipse cx="800" cy="560" rx="820" ry="380" fill="url(#spot)"/>
+  
+  <g >
+  <defs>
+    <linearGradient id="paint" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#56a6ff"/><stop offset=".45" stop-color="#1f6fd1"/><stop offset="1" stop-color="#003395"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3a414c"/><stop offset=".5" stop-color="#0d1016"/><stop offset="1" stop-color="#232a35"/>
+    </linearGradient>
+    <radialGradient id="rim"><stop offset="0" stop-color="#9aa0a8"/><stop offset="1" stop-color="#3b3f45"/></radialGradient>
+  </defs>
+  <ellipse cx="800" cy="765" rx="720" ry="36" fill="#000" opacity=".55"/>
+  <path d="M300,735 C280,675 295,575 380,550
+    L510,530 C560,445 590,385 640,385
+    L1070,385 C1150,385 1220,505 1250,525
+    L1260,535 C1310,545 1315,685 1300,735 Z" fill="url(#paint)"/>
+  <path d="M540,523 C580,440 600,403 645,403
+    L1065,403 C1130,403 1180,505 1200,521 Z" fill="url(#glass)"/>
+  <path d="M390,580 L1240,585" stroke="#79c9ff" stroke-opacity=".5" stroke-width="4"/>
+  <rect x="296" y="575" width="60" height="16" rx="8" fill="#fff7e0" opacity=".9"/>
+  <rect x="1248" y="569" width="50" height="14" rx="7" fill="#ff2a2a" opacity=".9"/>
+  
+    <circle cx="550" cy="690" r="102" fill="#050505"/>
+    <circle cx="550" cy="690" r="88" fill="#111"/>
+    <circle cx="550" cy="690" r="66" fill="url(#rim)"/>
+    <rect x="545" y="628" width="10" height="58" rx="5" fill="#2a2c30" transform="rotate(0 550 690)"/><rect x="545" y="628" width="10" height="58" rx="5" fill="#2a2c30" transform="rotate(72 550 690)"/><rect x="545" y="628" width="10" height="58" rx="5" fill="#2a2c30" transform="rotate(144 550 690)"/><rect x="545" y="628" width="10" height="58" rx="5" fill="#2a2c30" transform="rotate(216 550 690)"/><rect x="545" y="628" width="10" height="58" rx="5" fill="#2a2c30" transform="rotate(288 550 690)"/>
+    <circle cx="550" cy="690" r="12" fill="#888"/>
+    <circle cx="1050" cy="690" r="102" fill="#050505"/>
+    <circle cx="1050" cy="690" r="88" fill="#111"/>
+    <circle cx="1050" cy="690" r="66" fill="url(#rim)"/>
+    <rect x="1045" y="628" width="10" height="58" rx="5" fill="#2a2c30" transform="rotate(0 1050 690)"/><rect x="1045" y="628" width="10" height="58" rx="5" fill="#2a2c30" transform="rotate(72 1050 690)"/><rect x="1045" y="628" width="10" height="58" rx="5" fill="#2a2c30" transform="rotate(144 1050 690)"/><rect x="1045" y="628" width="10" height="58" rx="5" fill="#2a2c30" transform="rotate(216 1050 690)"/><rect x="1045" y="628" width="10" height="58" rx="5" fill="#2a2c30" transform="rotate(288 1050 690)"/>
+    <circle cx="1050" cy="690" r="12" fill="#888"/></g>
+  <text x="60" y="80" font-family="Arial, sans-serif" font-size="26" letter-spacing="6" fill="#fff" opacity=".6">IRONCAR · VISUEL DE DÉMONSTRATION</text>
+</svg>
