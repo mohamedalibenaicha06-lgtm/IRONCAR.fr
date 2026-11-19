@@ -2,7 +2,6 @@ import { vehicles } from "@/lib/repositories";
 import { Button } from "@/components/Button";
 import { ContactBand } from "@/components/ContactBand";
 import { HomeHero } from "@/components/HomeHero";
-import { Marquee } from "@/components/home/Marquee";
 import { MaskTitle } from "@/components/home/MaskTitle";
 import { ServiceShifter } from "@/components/home/ServiceShifter";
 import { Reveal } from "@/components/Reveal";
@@ -23,7 +22,6 @@ export default async function Home() {
       <div aria-hidden className="trajectory" />
 
       <HomeHero saleCount={forSale.length} />
-      <Marquee />
 
       {/* Services : 4 rapports */}
       <section id="services" className="mx-auto max-w-7xl scroll-mt-20 px-5 pt-20 sm:px-8 md:pt-28">
