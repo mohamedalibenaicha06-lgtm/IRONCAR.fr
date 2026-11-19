@@ -7,7 +7,7 @@ import { Icon } from "@/components/Icon";
 import { MediaSlot } from "@/components/MediaSlot";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeading } from "@/components/SectionHeading";
-import { VehicleCard } from "@/components/VehicleCard";
+import { SaleVehicleCard } from "@/components/SaleVehicleCard";
 import { media } from "@/lib/site";
 
 const services = [
@@ -59,7 +59,7 @@ export default async function Home() {
         <SectionHeading eyebrow="À vendre" title="Véhicules disponibles"
           action={<Button href="/achat" variant="link" arrow>Tous les véhicules</Button>} />
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {featured.map((v, i) => <Reveal key={v.id} delay={i * 70}><VehicleCard v={v} /></Reveal>)}
+          {featured.map((v, i) => <Reveal key={v.id} delay={i * 70} className="h-full"><SaleVehicleCard v={v} /></Reveal>)}
         </div>
       </section>
 

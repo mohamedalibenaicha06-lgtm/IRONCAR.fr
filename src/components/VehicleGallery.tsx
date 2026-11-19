@@ -51,32 +51,34 @@ export function VehicleGallery({ images, title }: { images: string[]; title: str
 
   return (
     <div>
-      <div className="group relative aspect-[3/2] cursor-zoom-in touch-pan-y overflow-hidden rounded-lg bg-sand" onClick={() => setZoom(true)} {...swipe}>
+      <div className="group relative aspect-[4/5] cursor-zoom-in sm:aspect-[4/3] touch-pan-y overflow-hidden rounded-lg bg-sand" onClick={() => setZoom(true)} {...swipe}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={images[i]} alt="" aria-hidden className="absolute inset-0 hidden size-full scale-110 object-cover opacity-40 blur-2xl sm:block" />
         {images.map((src, n) => (
           // eslint-disable-next-line @next/next/no-img-element
           <img key={src} src={src} alt={`${title}, photo ${n + 1} sur ${images.length}`} width={1600} height={1000} decoding="async"
             fetchPriority={n === 0 ? "high" : "low"}
-            className={`absolute inset-0 size-full object-cover transition-opacity duration-300 ${n === i ? "opacity-100" : "opacity-0"}`} />
+            className={`absolute inset-0 size-full object-cover object-[50%_75%] transition-[opacity,transform] duration-500 sm:object-contain ${n === i ? "scale-100 opacity-100" : "scale-[1.03] opacity-0"}`} />
         ))}
-        <Arrows />
-        <span className="absolute right-3 bottom-3 rounded bg-black/55 px-2 py-0.5 text-xs text-white tabular-nums">{i + 1} / {images.length}</span>
+        {images.length > 1 && <Arrows />}
+        {images.length > 1 && <span className="absolute right-3 bottom-3 rounded bg-black/55 px-2 py-0.5 text-xs text-white tabular-nums">{i + 1} / {images.length}</span>}
       </div>
-      <div className="mt-2.5 grid grid-cols-4 gap-2.5">
+      {images.length > 1 && <div className="mt-2.5 grid grid-cols-4 gap-2.5">
         {images.map((src, n) => (
           <button key={src} onClick={() => setI(n)} aria-label={`Afficher la photo ${n + 1}`} aria-current={n === i}
-            className={`aspect-[3/2] overflow-hidden rounded bg-sand transition-opacity ${n === i ? "ring-2 ring-ink ring-offset-2 ring-offset-paper" : "opacity-60 hover:opacity-100"}`}>
+            className={`aspect-[3/2] overflow-hidden rounded bg-sand transition-opacity ${n === i ? "ring-2 ring-accent ring-offset-2 ring-offset-paper" : "opacity-60 hover:opacity-100"}`}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={src} alt="" width={160} height={100} loading="lazy" decoding="async" className="size-full object-cover" />
           </button>
         ))}
-      </div>
+      </div>}
 
       {zoom && (
         <div className="fixed inset-0 z-[60] grid place-items-center bg-black/95 p-4" onClick={() => setZoom(false)} role="dialog" aria-modal="true" aria-label={title} {...swipe}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={images[i]} alt={title} className="max-h-[85vh] w-full max-w-6xl object-contain" />
           <button aria-label="Fermer" className="absolute top-4 right-4 grid size-11 place-items-center rounded-full text-white hover:bg-white/10"><Icon name="close" /></button>
-          <Arrows dark />
+          {images.length > 1 && <Arrows dark />}
         </div>
       )}
     </div>

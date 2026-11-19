@@ -5,7 +5,7 @@
 export type ListingType = "sale" | "rental";
 export type Fuel = "Essence" | "Diesel" | "Hybride" | "Électrique";
 export type Transmission = "Automatique" | "Manuelle";
-export type BodyType = "Berline" | "SUV" | "Coupé" | "Cabriolet" | "Citadine" | "Break";
+export type BodyType = "Berline" | "SUV" | "Coupé" | "Cabriolet" | "Citadine" | "Break" | "Monospace" | "Moto";
 export type VehicleStatus = "available" | "reserved" | "sold";
 
 export interface Vehicle {

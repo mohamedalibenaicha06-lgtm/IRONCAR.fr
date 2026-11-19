@@ -3,10 +3,12 @@ import { useMemo, useState } from "react";
 import type { Vehicle, VehicleFilters } from "@/types/vehicle";
 import { applyFilters } from "@/lib/filters";
 import { VehicleCard } from "./VehicleCard";
+import { SaleVehicleCard } from "./SaleVehicleCard";
+import { Reveal } from "./Reveal";
 import { Icon } from "./Icon";
 
 const FUELS = ["Essence", "Diesel", "Hybride", "Électrique"] as const;
-const BODIES = ["Berline", "SUV", "Coupé", "Cabriolet", "Citadine", "Break"] as const;
+const BODIES = ["Berline", "SUV", "Coupé", "Cabriolet", "Citadine", "Break", "Monospace", "Moto"] as const;
 
 function Select({ label, value, onChange, options }: {
   label: string; value: string; onChange: (v: string) => void; options: { value: string; label: string }[];
@@ -82,7 +84,9 @@ export function CatalogView({ vehicles, brands, listingType }: { vehicles: Vehic
 
       {results.length ? (
         <div className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-          {results.map((v) => <VehicleCard key={v.id} v={v} />)}
+          {results.map((v, i) => sale
+            ? <Reveal key={v.id} delay={(i % 3) * 90} className="h-full"><SaleVehicleCard v={v} /></Reveal>
+            : <VehicleCard key={v.id} v={v} />)}
         </div>
       ) : (
         <div className="rounded-md bg-sand px-6 py-14 text-center">
