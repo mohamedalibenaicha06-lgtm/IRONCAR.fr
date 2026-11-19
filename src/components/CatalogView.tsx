@@ -7,6 +7,9 @@ import { SaleVehicleCard } from "./SaleVehicleCard";
 import { Reveal } from "./Reveal";
 import { Icon } from "./Icon";
 
+const nf = (n: number) => new Intl.NumberFormat("fr-FR").format(n);
+const euro = (n: number) => `${nf(n)} €`;
+
 const FUELS = ["Essence", "Diesel", "Hybride", "Électrique"] as const;
 const BODIES = ["Berline", "SUV", "Coupé", "Cabriolet", "Citadine", "Break", "Monospace", "Moto"] as const;
 
@@ -18,7 +21,7 @@ function Select({ label, value, onChange, options }: {
       <span className="text-[0.8125rem] text-mute">{label}</span>
       <span className="relative">
         <select value={value} onChange={(e) => onChange(e.target.value)}
-          className="h-11 w-full appearance-none rounded-md border border-line bg-coal pr-9 pl-3 text-base text-ink outline-none transition-colors hover:border-ink/30 focus:border-ink md:text-[0.9375rem]">
+          className="h-11 w-full appearance-none truncate rounded-md border border-line bg-coal pr-8 pl-3 text-base text-ink outline-none transition-colors hover:border-ink/30 focus:border-ink md:text-[0.9375rem]">
           {options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
         </select>
         <Icon name="arrow" className="pointer-events-none absolute top-1/2 right-3 size-3.5 -translate-y-1/2 rotate-90 text-mute" />
@@ -31,7 +34,7 @@ export function CatalogView({ vehicles, brands, listingType }: { vehicles: Vehic
   const [f, setF] = useState<VehicleFilters>({ sort: "recent" });
   const [open, setOpen] = useState(false);
   const set = (k: keyof VehicleFilters) => (v: string) =>
-    setF((p) => ({ ...p, [k]: v === "" ? undefined : ["maxPrice", "maxMileage"].includes(k) ? Number(v) : v }));
+    setF((p) => ({ ...p, [k]: v === "" ? undefined : ["minPrice", "maxPrice", "maxMileage", "minYear"].includes(k) ? Number(v) : v }));
   const results = useMemo(() => applyFilters(vehicles, f), [vehicles, f]);
   const sale = listingType === "sale";
   const any = (l: string) => [{ value: "", label: l }];
@@ -51,14 +54,22 @@ export function CatalogView({ vehicles, brands, listingType }: { vehicles: Vehic
         </button>
       </div>
 
-      <div className={`grid gap-3 sm:grid-cols-2 md:mt-5 md:!grid md:grid-cols-3 lg:grid-cols-5 ${open ? "mt-4 grid" : "hidden"}`}>
+      <div className={`grid grid-cols-2 gap-x-3 gap-y-3.5 md:mt-5 md:!grid md:grid-cols-3 ${sale ? "lg:grid-cols-4" : "lg:grid-cols-5"} ${open ? "mt-4 grid" : "hidden"}`}>
         <Select label="Marque" value={f.brand ?? ""} onChange={set("brand")} options={[...any("Toutes"), ...brands.map((b) => ({ value: b, label: b }))]} />
         <Select label="Carrosserie" value={f.bodyType ?? ""} onChange={set("bodyType")} options={[...any("Toutes"), ...BODIES.map((b) => ({ value: b, label: b }))]} />
         <Select label="Énergie" value={f.fuel ?? ""} onChange={set("fuel")} options={[...any("Toutes"), ...FUELS.map((b) => ({ value: b, label: b }))]} />
         <Select label="Boîte" value={f.transmission ?? ""} onChange={set("transmission")} options={[...any("Toutes"), { value: "Automatique", label: "Automatique" }, { value: "Manuelle", label: "Manuelle" }]} />
         {sale ? (
-          <Select label="Budget maximum" value={String(f.maxPrice ?? "")} onChange={set("maxPrice")}
-            options={[...any("Sans limite"), ...[25000, 50000, 75000, 100000, 150000].map((n) => ({ value: String(n), label: `${new Intl.NumberFormat("fr-FR").format(n)} €` }))]} />
+          <>
+            <Select label="Prix minimum" value={String(f.minPrice ?? "")} onChange={set("minPrice")}
+              options={[...any("Sans minimum"), ...[5000, 10000, 15000, 20000, 30000].map((n) => ({ value: String(n), label: euro(n) }))]} />
+            <Select label="Prix maximum" value={String(f.maxPrice ?? "")} onChange={set("maxPrice")}
+              options={[...any("Sans limite"), ...[10000, 15000, 20000, 30000, 50000].map((n) => ({ value: String(n), label: euro(n) }))]} />
+            <Select label="Kilométrage maximum" value={String(f.maxMileage ?? "")} onChange={set("maxMileage")}
+              options={[...any("Sans limite"), ...[20000, 50000, 100000, 150000].map((n) => ({ value: String(n), label: `${nf(n)} km` }))]} />
+            <Select label="Année minimum" value={String(f.minYear ?? "")} onChange={set("minYear")}
+              options={[...any("Toutes"), ...[2010, 2015, 2018, 2020, 2022].map((n) => ({ value: String(n), label: `${n} et plus` }))]} />
+          </>
         ) : (
           <Select label="Tarif par jour maximum" value={String(f.maxPrice ?? "")} onChange={set("maxPrice")}
             options={[...any("Sans limite"), ...[80, 150, 250, 400].map((n) => ({ value: String(n), label: `${n} €` }))]} />
@@ -77,7 +88,8 @@ export function CatalogView({ vehicles, brands, listingType }: { vehicles: Vehic
             <option value="recent">Plus récents</option>
             <option value="price-asc">Prix croissant</option>
             <option value="price-desc">Prix décroissant</option>
-            {sale && <option value="mileage-asc">Kilométrage</option>}
+            {sale && <option value="year-desc">Année (plus récente)</option>}
+            {sale && <option value="mileage-asc">Kilométrage croissant</option>}
           </select>
         </label>
       </div>

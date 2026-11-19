@@ -11,14 +11,17 @@ export function applyFilters(list: Vehicle[], f: VehicleFilters = {}): Vehicle[]
       (!f.fuel || v.fuel === f.fuel) &&
       (!f.bodyType || v.bodyType === f.bodyType) &&
       (!f.transmission || v.transmission === f.transmission) &&
+      (!f.minPrice || priceOf(v) >= f.minPrice) &&
       (!f.maxPrice || priceOf(v) <= f.maxPrice) &&
       (!f.maxMileage || v.mileageKm <= f.maxMileage) &&
+      (!f.minYear || v.year >= f.minYear) &&
       (!q || `${v.brand} ${v.model} ${v.version}`.toLowerCase().includes(q)),
   );
   const sorters: Record<NonNullable<VehicleFilters["sort"]>, (a: Vehicle, b: Vehicle) => number> = {
     recent: (a, b) => b.createdAt.localeCompare(a.createdAt),
     "price-asc": (a, b) => priceOf(a) - priceOf(b),
     "price-desc": (a, b) => priceOf(b) - priceOf(a),
+    "year-desc": (a, b) => b.year - a.year,
     "mileage-asc": (a, b) => a.mileageKm - b.mileageKm,
   };
   return out.sort(sorters[f.sort ?? "recent"]);

@@ -14,10 +14,8 @@ export function InquiryActions({ v }: { v: Vehicle }) {
       <Button href={`/contact?sujet=${intent}&vehicule=${encodeURIComponent(label)}`} className="w-full">
         {v.listingType === "sale" ? "Demander des informations" : "Demander une réservation"}
       </Button>
-      <div className="grid grid-cols-2 gap-2.5">
-        <Button href={whatsappUrl(msg)} external variant="secondary" icon="whatsapp">WhatsApp</Button>
-        <Button href={`tel:${site.phone.replace(/\s/g, "")}`} external variant="secondary" icon="phone">Appeler</Button>
-      </div>
+      <Button href={whatsappUrl(msg)} external variant="whatsapp" icon="whatsapp" className="w-full">Contacter sur WhatsApp</Button>
+      <Button href={`tel:${site.phone.replace(/\s/g, "")}`} external variant="link" icon="phone" className="mx-auto mt-1">Appeler le {site.phone}</Button>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Vehicle } from "@/types/vehicle";
 import { km } from "@/lib/site";
-import { DemoBadge } from "./DemoBadge";
+import { DemoBadge, StatusBadge } from "./DemoBadge";
 import { Icon, type IconName } from "./Icon";
 import { VehicleImage, VehiclePrice, vehicleHref, vehicleTitle } from "./VehicleCard";
 
@@ -11,13 +11,13 @@ export function SaleVehicleCard({ v }: { v: Vehicle }) {
   const facts: [IconName, string][] = [["calendar", String(v.year)], ["gauge", km(v.mileageKm)], ["fuel", v.fuel], ["gear", v.transmission]];
   const contact = `/contact?sujet=achat&vehicule=${encodeURIComponent(`${vehicleTitle(v)} ${v.version} (${v.year}), réf. ${v.id}`)}`;
   return (
-    <article className="svc group flex h-full flex-col overflow-hidden rounded-lg border border-line bg-coal transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-[0_24px_60px_-30px_rgb(229_57_53/0.45)]">
+    <article className={`svc group ${v.status === "sold" ? "opacity-70" : ""} flex h-full flex-col overflow-hidden rounded-lg border border-line bg-coal transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-[0_24px_60px_-30px_rgb(0_0_0/0.8)]`}>
       <Link href={href} className="svc-media relative block aspect-[4/5] overflow-hidden" aria-label={`Voir ${vehicleTitle(v)}`}>
         <VehicleImage v={v} className="object-[50%_78%]" />
         <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/85 to-transparent" />
         <div className="absolute top-3 left-3 flex gap-1.5">
           {v.isDemo && <DemoBadge />}
-          {v.status !== "available" && <span className="rounded bg-accent px-2 py-0.5 text-[11px] font-medium text-white">{v.status === "sold" ? "Vendu" : "Réservé"}</span>}
+          <StatusBadge status={v.status} />
         </div>
         <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4">
           <div className="min-w-0">

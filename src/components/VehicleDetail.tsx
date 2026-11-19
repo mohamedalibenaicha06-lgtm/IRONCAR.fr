@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Vehicle } from "@/types/vehicle";
 import { eur, km, site, whatsappUrl } from "@/lib/site";
-import { DemoBadge } from "./DemoBadge";
+import { DemoBadge, StatusBadge } from "./DemoBadge";
 import { Icon } from "./Icon";
 import { InquiryActions } from "./InquiryActions";
 import { Reveal } from "./Reveal";
@@ -56,7 +56,7 @@ export function VehicleDetail({ v, related }: { v: Vehicle; related: Vehicle[] }
         <div className="grid gap-8 lg:grid-cols-[1.6fr_1fr] lg:gap-12">
           <VehicleGallery images={v.images} title={vehicleTitle(v)} />
           <aside className="lg:sticky lg:top-24 lg:self-start">
-            {v.isDemo && <DemoBadge className="mb-3" />}
+            <div className="mb-3 flex gap-1.5">{v.isDemo && <DemoBadge />}{sale && <StatusBadge status={v.status} />}</div>
             <h1 className="text-[1.75rem] font-semibold leading-tight md:text-[2rem]">{vehicleTitle(v)}</h1>
             <p className="mt-1 text-mute">{v.version}</p>
             <p className="mt-4 text-sm text-ink-2">{keyFacts.join(" · ")}</p>

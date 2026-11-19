@@ -45,8 +45,10 @@ export interface VehicleFilters {
   fuel?: Fuel;
   bodyType?: BodyType;
   transmission?: Transmission;
+  minPrice?: number;
   maxPrice?: number;
   maxMileage?: number;
+  minYear?: number;
   query?: string;
-  sort?: "recent" | "price-asc" | "price-desc" | "mileage-asc";
+  sort?: "recent" | "price-asc" | "price-desc" | "year-desc" | "mileage-asc";
 }

@@ -124,7 +124,7 @@ export const saleVehicles: Vehicle[] = [
     ],
     description:
       "Citadine économique et fiable, parfaite pour un premier véhicule ou les trajets quotidiens. Le 1.5 dCi est connu pour sa sobriété. Entretien à jour, prête à rouler.",
-    status: "available",
+    status: "reserved",
     featured: false,
     isDemo: true,
     createdAt: "2026-11-15T09:00:00.000Z",
