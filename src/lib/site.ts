@@ -35,9 +35,9 @@ export type MediaSlot = { src?: string; alt: string };
 export const media: { hero: MediaSlot; services: Record<"achat" | "vente" | "location" | "inspection", MediaSlot> } = {
   hero: { alt: "Véhicule vedette IRONCAR" },
   services: {
-    achat: { alt: "Véhicule d'occasion sélectionné" },
-    vente: { alt: "Estimation d'un véhicule" },
-    location: { alt: "Véhicule de location" },
-    inspection: { alt: "Inspection d'un véhicule" },
+    achat: { src: "/vehicles/renault-megane-4.webp", alt: "Renault Mégane noire en ville" },
+    vente: { src: "/vehicles/citroen-c4-picasso.webp", alt: "Citroën C4 Picasso sur un parking" },
+    location: { src: "/vehicles/renault-clio-3.webp", alt: "Renault Clio grise" },
+    inspection: { src: "/vehicles/yamaha-tracer-9.webp", alt: "Yamaha Tracer 9, roue avant et freinage" },
   },
 };

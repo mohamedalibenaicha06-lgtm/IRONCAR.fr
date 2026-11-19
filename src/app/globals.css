@@ -104,3 +104,128 @@ p { text-wrap: pretty; }
   .reveal { opacity: 1; transform: none; }
   .menu-item, .menu-fade { opacity: 1 !important; transform: none !important; }
 }
+
+/* ======================================================================
+   ACCUEIL « BOÎTE DE VITESSES » — signature motion IRONCAR
+   1. Accélération/freinage : tout entre vite et freine net (--ease-brake).
+   2. Passage de rapport : les changements de service sont courts et mécaniques.
+   3. Volet de garage : les photos se dévoilent par le bas.
+   4. Trajectoire : une ligne rouge suit la lecture de la page.
+   ====================================================================== */
+:root { --intro: 0s; --ease-shift: cubic-bezier(.3, 1.45, .5, 1); --ease-door: cubic-bezier(.7, 0, .2, 1); }
+html[data-intro="play"] { --intro: .95s; }
+
+/* Introduction (première visite) — ne bloque jamais les clics */
+.intro { display: none; }
+html[data-intro="play"] .intro { display: block; position: fixed; inset: 0; z-index: 80; pointer-events: none; animation: intro-off 0s linear 1.45s forwards; }
+.intro-half { position: absolute; left: 0; right: 0; height: 50.5%; background: var(--color-paper); }
+.intro-top { top: 0; animation: half-up .55s var(--ease-door) .9s both; }
+.intro-bottom { bottom: 0; animation: half-down .55s var(--ease-door) .9s both; }
+.intro-logo { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; animation: logo-out .35s ease-in .82s both; }
+.intro-logo span { display: inline-block; animation: logo-ch .5s var(--ease-brake) both; animation-delay: var(--t); }
+.intro-streak { position: absolute; top: 50%; left: 0; height: 2px; width: 45vw; margin-top: 2.2rem; background: linear-gradient(90deg, transparent, var(--color-accent) 60%, #fff); filter: blur(.5px); box-shadow: 0 0 18px 2px rgb(229 57 53 / .6); animation: streak-run .5s cubic-bezier(.5, 0, .2, 1) .42s both; }
+@keyframes logo-ch { from { transform: translateY(110%) skewY(8deg); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes logo-out { to { opacity: 0; transform: scale(.94); letter-spacing: .2em; } }
+@keyframes streak-run { from { transform: translateX(-50vw); opacity: 0; } 20% { opacity: 1; } to { transform: translateX(160vw); opacity: 0; } }
+@keyframes half-up { to { transform: translateY(-101%); } }
+@keyframes half-down { to { transform: translateY(101%); } }
+@keyframes intro-off { to { visibility: hidden; } }
+html[data-intro="play"] .site-header { animation: header-in .6s var(--ease-brake) 1.35s both; }
+@keyframes header-in { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: none; } }
+
+/* Titre : lettres qui arrivent de loin, flou de vitesse, freinage */
+.split { display: inline-block; white-space: nowrap; }
+.split .ch { display: inline-block; animation: .75s var(--ease-brake) both; animation-delay: calc(var(--intro) + var(--t)); }
+.split-left .ch { animation-name: ch-left; }
+.split-right .ch { animation-name: ch-right; }
+.split-mask { overflow: hidden; vertical-align: top; padding-bottom: .05em; }
+.split-mask .ch { animation-name: ch-mask; animation-duration: .7s; }
+@keyframes ch-left { from { transform: translateX(-38vw) skewX(-14deg); opacity: 0; filter: blur(10px); } 60% { filter: blur(0); } to { transform: none; opacity: 1; filter: none; } }
+@keyframes ch-right { from { transform: translateX(38vw) skewX(14deg); opacity: 0; filter: blur(10px); } 60% { filter: blur(0); } to { transform: none; opacity: 1; filter: none; } }
+@keyframes ch-mask { from { transform: translateY(105%) skewY(10deg); } to { transform: none; } }
+.hx-in { animation: fade-up .8s var(--ease-out-soft) both; animation-delay: calc(var(--intro) + var(--d, 0s)); }
+.hx-rule { transform-origin: left; animation: rule-in .7s var(--ease-brake) both; animation-delay: var(--intro); }
+@keyframes rule-in { from { transform: scaleX(0); } to { transform: none; } }
+
+/* Lignes de vitesse : filent une fois puis restent en filigrane */
+.speed-lines span { position: absolute; left: 0; height: 1px; width: var(--w); background: linear-gradient(90deg, transparent, rgb(255 255 255 / .12) 70%, rgb(229 57 53 / .5)); opacity: .5; animation: line-run 1.2s var(--ease-brake) both; animation-delay: calc(var(--intro) + var(--d)); }
+@keyframes line-run { from { transform: translateX(-100%); opacity: 0; } 30% { opacity: 1; } to { transform: translateX(var(--rest, 35%)); opacity: .5; } }
+.speed-lines span:nth-child(even) { --rest: 120%; }
+.hero-06 { animation: fade-in-06 1.6s var(--ease-brake) both; animation-delay: calc(var(--intro) + .2s); }
+@keyframes fade-in-06 { from { opacity: 0; transform: translateX(12%); } to { opacity: 1; transform: none; } }
+@supports (animation-timeline: view()) {
+  .hero-x .speed-lines { animation: hero-drift linear both; animation-timeline: view(); animation-range: exit; }
+  @keyframes hero-drift { to { transform: translateX(-12%); } }
+}
+
+/* Compteur mécanique (valeur réelle : nombre d'annonces) */
+.odo { display: inline-flex; height: 1em; overflow: hidden; line-height: 1; font-family: var(--font-display); font-weight: 800; font-size: 1.15em; }
+.odo-col { display: flex; flex-direction: column; transform: translateY(calc(var(--v) * -1em)); animation: odo-roll 1.3s var(--ease-brake) both; animation-delay: calc(var(--intro) + 1s + var(--i) * .12s); }
+.odo-col span { height: 1em; }
+@keyframes odo-roll { from { transform: translateY(0); } }
+
+/* Sélecteur de rapports : passe 1→4 puis se pose sur « Achat » ; suit le survol */
+.gearbox .gear-indicator { transition: transform .26s var(--ease-shift); animation: gear-shift 1.5s both; animation-fill-mode: backwards; animation-delay: calc(var(--intro) + 1.05s); }
+@keyframes gear-shift {
+  0%, 12% { transform: translateX(0); } 20%, 32% { transform: translateX(100%); } 40%, 52% { transform: translateX(200%); }
+  60%, 74% { transform: translateX(300%); } 86%, 100% { transform: translateX(0); }
+}
+.gearbox:has(li:nth-child(3):hover) .gear-indicator, .gearbox:has(li:nth-child(3) :focus-visible) .gear-indicator { transform: translateX(100%); }
+.gearbox:has(li:nth-child(4):hover) .gear-indicator, .gearbox:has(li:nth-child(4) :focus-visible) .gear-indicator { transform: translateX(200%); }
+.gearbox:has(li:nth-child(5):hover) .gear-indicator, .gearbox:has(li:nth-child(5) :focus-visible) .gear-indicator { transform: translateX(300%); }
+.gear { position: relative; z-index: 1; }
+
+/* Bandeau */
+.marquee-track { animation: marquee 26s linear infinite; }
+.marquee-band:hover .marquee-track { animation-play-state: paused; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+
+/* Trajectoire */
+.trajectory { display: none; }
+@supports (animation-timeline: scroll()) {
+  .trajectory { display: block; position: fixed; top: 0; bottom: 0; left: max(6px, calc((100vw - 80rem) / 2 - 18px)); width: 2px; z-index: 30; pointer-events: none;
+    background: linear-gradient(180deg, transparent, var(--color-accent) 12%, var(--color-accent)); transform-origin: top; animation: grow-y linear both; animation-timeline: scroll(root); }
+  @keyframes grow-y { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+}
+
+/* Titres de section : mots derrière un masque */
+.mword { display: inline-block; overflow: hidden; vertical-align: top; margin-right: .2em; padding-bottom: .05em; }
+.mword > span { display: inline-block; transform: translateY(105%) skewY(6deg); transition: transform .85s var(--ease-brake); transition-delay: calc(var(--i) * 70ms + 80ms); }
+.reveal[data-visible="true"] .mword > span { transform: none; }
+.reveal .draw-x { transform: scaleX(0); transform-origin: left; transition: transform 1s var(--ease-brake) calc(var(--d, 0ms) + 200ms); }
+.reveal[data-visible="true"] .draw-x { transform: none; }
+
+/* Volet de garage */
+.garage::after { content: ""; position: absolute; inset: 0; z-index: 2; background: repeating-linear-gradient(180deg, #1c1c1c 0 11px, #101010 11px 13px); transform-origin: top; transition: transform .9s var(--ease-door) .15s; }
+.reveal[data-visible="true"] .garage::after { transform: scaleY(0); }
+.garage.is-open::after { animation: door-up .7s var(--ease-door) .05s both; }
+@keyframes door-up { from { transform: scaleY(1); } to { transform: scaleY(0); } }
+.shift-img { animation: settle 1.3s var(--ease-brake) both; }
+@keyframes settle { from { transform: scale(1.08); } to { transform: none; } }
+
+/* Passage de rapport (panneau ordinateur) */
+.shift-bar { transition: transform .24s var(--ease-shift); }
+.shift-panel { animation: shift-in .3s var(--ease-shift) both; }
+.shift-copy > * { animation: fade-up .45s var(--ease-out-soft) both; }
+.shift-copy > *:nth-child(2) { animation-delay: .05s; } .shift-copy > *:nth-child(3) { animation-delay: .1s; } .shift-copy > *:nth-child(4) { animation-delay: .15s; }
+@keyframes shift-in { from { transform: translateY(14px); opacity: .4; } to { transform: none; opacity: 1; } }
+@media (min-width: 1024px) {
+  .svc-row.is-active { background: radial-gradient(60% 120% at 0% 50%, rgb(229 57 53 / .08), transparent 70%); }
+}
+
+/* Bouton à bordure qui se dessine */
+.draw-border { border: 1px solid rgb(242 239 234 / .25); transition: color .2s, background-color .2s; }
+.draw-border::before { content: ""; position: absolute; inset: -1px; border: 1px solid var(--color-accent); border-radius: inherit; clip-path: inset(0 100% 0 0); transition: clip-path .5s var(--ease-brake); }
+.draw-border:hover::before, .draw-border:focus-visible::before { clip-path: inset(0 0 0 0); }
+.draw-border:hover { color: #fff; box-shadow: 0 0 30px -8px rgb(229 57 53 / .55); }
+
+/* Étapes */
+.step .draw-x:last-of-type { transition-delay: calc(var(--d, 0ms) + 450ms); }
+
+@media (prefers-reduced-motion: reduce) {
+  .intro, .trajectory { display: none !important; }
+  .mword > span, .reveal .draw-x, .odo-col { transform: none; }
+  .odo-col { transform: translateY(calc(var(--v) * -1em)) !important; }
+  .garage::after { display: none; }
+}
+html[data-intro="play"] .page-enter { animation: none; }
