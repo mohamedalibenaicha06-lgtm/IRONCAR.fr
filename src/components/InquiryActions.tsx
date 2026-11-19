@@ -15,7 +15,7 @@ export function InquiryActions({ v }: { v: Vehicle }) {
         {v.listingType === "sale" ? "Demander des informations" : "Demander une réservation"}
       </Button>
       <Button href={whatsappUrl(msg)} external variant="whatsapp" icon="whatsapp" className="w-full">Contacter sur WhatsApp</Button>
-      <Button href={`tel:${site.phone.replace(/\s/g, "")}`} external variant="link" icon="phone" className="mx-auto mt-1">Appeler le {site.phone}</Button>
+      <Button href={`tel:${site.phoneHref}`} external variant="link" icon="phone" className="mx-auto mt-1">Appeler le {site.phone}</Button>
     </div>
   );
 }

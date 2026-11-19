@@ -13,7 +13,7 @@ export function ContactBand({ title = "Une question sur un véhicule ou un proje
         <div className="grid gap-2.5 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2">
           <Button href="/contact" arrow>Envoyer une demande</Button>
           <Button href={whatsappUrl("Bonjour, je souhaite un renseignement.")} external variant="secondary" icon="whatsapp">WhatsApp</Button>
-          <Button href={`tel:${site.phone.replace(/\s/g, "")}`} external variant="link" className="sm:col-span-2 md:col-span-1 lg:col-span-2">ou appelez le {site.phone}</Button>
+          <Button href={`tel:${site.phoneHref}`} external variant="link" className="sm:col-span-2 md:col-span-1 lg:col-span-2">ou appelez le {site.phone}</Button>
         </div>
       </Reveal>
     </section>

@@ -42,7 +42,7 @@ export function Header() {
   // Sur l'accueil, l'en-tête est transparent tant que l'on n'a pas défilé : le véhicule occupe toute la scène.
   const overlay = (pathname === "/" && !scrolled) || open;
   const active = (href: string) => pathname === href || pathname.startsWith(href + "/");
-  const tel = `tel:${site.phone.replace(/\s/g, "")}`;
+  const tel = `tel:${site.phoneHref}`;
 
   return (
     <>

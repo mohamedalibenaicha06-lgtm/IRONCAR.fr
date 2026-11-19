@@ -1,23 +1,18 @@
-/** Coordonnées FICTIVES — à remplacer par les vraies informations. */
+/** Coordonnées IRONCAR (adresse encore à préciser). */
 export const site = {
   name: "IRONCAR",
   tagline: "Achat, vente, location et inspection automobile à Nice",
   city: "Nice",
   address: "Adresse à préciser, 06000 Nice",
-  phone: "+33 4 00 00 00 00",
-  whatsapp: "33600000000",
-  email: "contact@ironcar.example",
+  phone: "06 95 89 38 79",
+  /** Format international pour les liens tel: */
+  phoneHref: "+33695893879",
+  whatsapp: "33695893879",
+  email: "bna.auto06@gmail.com",
   hours: "Sur rendez-vous",
 };
 
 export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-
-/** Coordonnées encore provisoires (à remplacer dans `site` ci-dessus). Sert uniquement à les signaler. */
-export const placeholderContact = {
-  phone: site.phone.includes("00 00 00 00"),
-  whatsapp: site.whatsapp === "33600000000",
-  email: site.email.endsWith(".example"),
-};
 
 export const nav = [
   { href: "/achat", label: "Acheter" },

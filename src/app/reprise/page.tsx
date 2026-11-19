@@ -1,19 +1,19 @@
 import type { Metadata } from "next";
 import { Icon, type IconName } from "@/components/Icon";
-import { placeholderContact, site, whatsappUrl } from "@/lib/site";
+import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Vendre mon véhicule",
   description: "Vous souhaitez vendre votre voiture à Nice ? Appelez IRONCAR, écrivez-nous sur WhatsApp ou par e-mail.",
 };
 
-const contacts: { n: string; icon: IconName; title: string; sub: string; value: string; href: string; external?: boolean; pending: boolean }[] = [
+const contacts: { n: string; icon: IconName; title: string; sub: string; value: string; href: string; external?: boolean }[] = [
   { n: "01", icon: "phone", title: "Appelez-nous", sub: "Un échange direct et rapide", value: site.phone,
-    href: `tel:${site.phone.replace(/\s/g, "")}`, pending: placeholderContact.phone },
+    href: `tel:${site.phoneHref}` },
   { n: "02", icon: "whatsapp", title: "Contactez-nous sur WhatsApp", sub: "Présentez votre véhicule en quelques mots", value: "Ouvrir la conversation",
-    href: whatsappUrl("Bonjour, je souhaite vendre mon véhicule avec IronCar."), external: true, pending: placeholderContact.whatsapp },
+    href: `https://wa.me/${site.whatsapp}`, external: true },
   { n: "03", icon: "mail", title: "Envoyez-nous un e\u2011mail", sub: "Pour toute demande détaillée", value: site.email,
-    href: `mailto:${site.email}?subject=${encodeURIComponent("Demande de vente de véhicule – IronCar")}`, pending: placeholderContact.email },
+    href: `mailto:${site.email}` },
 ];
 
 const words = ["Vendez", "votre", "véhicule."];
@@ -50,7 +50,6 @@ export default function VendrePage() {
                 <span className="mt-1.5 block text-[0.9375rem] text-ink-2">{c.sub}</span>
                 <span className="mt-1 flex flex-wrap items-center gap-2 text-sm text-mute">
                   <span className="truncate">{c.value}</span>
-                  {c.pending && <span className="rounded border border-accent/40 px-1.5 py-0.5 text-[10px] font-medium tracking-wide text-accent uppercase">Coordonnée à configurer</span>}
                 </span>
               </span>
               <span className="row-arrow grid size-11 shrink-0 place-items-center rounded-full border border-line" aria-hidden>

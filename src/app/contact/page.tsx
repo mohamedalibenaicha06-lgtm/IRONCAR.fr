@@ -9,7 +9,7 @@ export const metadata: Metadata = { title: "Contact" };
 
 export default function ContactPage() {
   const items: [IconName, string, string, string?][] = [
-    ["phone", "Téléphone", site.phone, `tel:${site.phone.replace(/\s/g, "")}`],
+    ["phone", "Téléphone", site.phone, `tel:${site.phoneHref}`],
     ["whatsapp", "WhatsApp", "Écrire un message", whatsappUrl("Bonjour, je souhaite un renseignement.")],
     ["mail", "E-mail", site.email, `mailto:${site.email}`],
     ["pin", "Adresse", `${site.address} · ${site.hours}`],

@@ -19,7 +19,7 @@ export function Footer() {
         <div>
           <p className="mb-4 text-sm font-medium text-white">Contact</p>
           <ul className="space-y-2.5 text-sm">
-            <li><a href={`tel:${site.phone.replace(/\s/g, "")}`} className="hover:text-white">{site.phone}</a></li>
+            <li><a href={`tel:${site.phoneHref}`} className="hover:text-white">{site.phone}</a></li>
             <li><a href={`mailto:${site.email}`} className="hover:text-white">{site.email}</a></li>
             <li>{site.address}</li>
             <li>{site.hours}</li>
@@ -28,7 +28,7 @@ export function Footer() {
       </div>
       <div className="border-t border-white/10">
         <p className="mx-auto max-w-7xl px-5 py-5 text-xs text-white/45 sm:px-8">
-          © {new Date().getFullYear()} {site.name}. Version de démonstration : les annonces et coordonnées affichées sont fictives.
+          © {new Date().getFullYear()} {site.name}. Version de démonstration : les annonces affichées sont fictives.
         </p>
       </div>
     </footer>

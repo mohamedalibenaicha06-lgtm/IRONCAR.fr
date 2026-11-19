@@ -42,7 +42,7 @@ export function VehicleDetail({ v, related }: { v: Vehicle; related: Vehicle[] }
           <p className="truncate text-xs text-mute">{vehicleTitle(v)}</p>
           <VehiclePrice v={v} className="block text-base font-semibold" />
         </div>
-        <a href={`tel:${site.phone.replace(/\s/g, "")}`} aria-label="Appeler" className="grid size-11 place-items-center rounded-md border border-ink/15"><Icon name="phone" className="size-[18px]" /></a>
+        <a href={`tel:${site.phoneHref}`} aria-label="Appeler" className="grid size-11 place-items-center rounded-md border border-ink/15"><Icon name="phone" className="size-[18px]" /></a>
         <a href={whatsappUrl(`Bonjour, je suis intéressé(e) par ${vehicleTitle(v)} ${v.version} (réf. ${v.id}).`)} target="_blank" rel="noopener noreferrer"
           className="flex h-11 items-center gap-2 rounded-md bg-[#1fa855] px-4 text-sm font-medium text-white"><Icon name="whatsapp" className="size-4" /> WhatsApp</a>
       </div>
