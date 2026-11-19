@@ -22,7 +22,7 @@ export function WhatsAppFab() {
   return (
     <a href={whatsappUrl("Bonjour, je souhaite un renseignement.")} target="_blank" rel="noopener noreferrer" aria-label="Nous écrire sur WhatsApp"
       tabIndex={hidden ? -1 : undefined} aria-hidden={hidden || undefined}
-      className={`fixed right-4 bottom-4 z-30 size-13 place-items-center rounded-full bg-[#1fa855] text-white shadow-lg shadow-black/15 transition-[transform,opacity] duration-300 hover:scale-105 sm:right-6 sm:bottom-6 ${onDetail ? "hidden lg:grid" : "grid"} ${hidden ? "pointer-events-none translate-y-3 opacity-0" : "opacity-100"}`}>
+      className={`fixed right-4 bottom-4 z-30 size-13 place-items-center rounded-full bg-[#1fa855] text-white shadow-lg shadow-black/15 transition-[transform,opacity] duration-300 hover:scale-105 sm:right-6 sm:bottom-6 ${onDetail ? "hidden lg:grid" : path === "/reprise" ? "hidden sm:grid" : "grid"} ${hidden ? "pointer-events-none translate-y-3 opacity-0" : "opacity-100"}`}>
       <Icon name="whatsapp" className="size-6" />
     </a>
   );

@@ -3,6 +3,7 @@ import { Button } from "@/components/Button";
 import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/Reveal";
 import { SellForm } from "@/components/SellForm";
+import { MaskTitle } from "@/components/home/MaskTitle";
 
 export const metadata: Metadata = {
   title: "Vendre mon véhicule",
@@ -26,26 +27,33 @@ export default function VendrePage() {
         </div>
       </PageHero>
 
-      {/* Étapes */}
-      <section className="mx-auto max-w-7xl px-5 py-14 sm:px-8 md:py-20">
-        <ol className="grid gap-6 md:grid-cols-3 md:gap-8">
+      {/* Étapes : cartes éditoriales (carrousel au doigt sur mobile) */}
+      <section className="pt-14 md:pt-20">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8">
+          <MaskTitle eyebrow="Comment ça marche" title="Trois étapes, c'est tout" className="mb-8 md:mb-12" />
+        </div>
+        <ol className="snap-row mx-auto flex max-w-7xl snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-2 sm:px-8 md:grid md:grid-cols-3 md:gap-5 md:overflow-visible">
           {steps.map(([t, d], i) => (
-            <Reveal as="li" key={t} delay={i * 90} className="relative pt-5">
-              <span aria-hidden className="draw-x absolute inset-x-0 top-0 h-px bg-line" />
-              <span aria-hidden className="draw-x absolute top-0 left-0 h-px w-12 bg-accent" />
-              <span className="font-display text-3xl font-extrabold text-accent tabular-nums">0{i + 1}</span>
-              <h2 className="mt-2 text-2xl md:text-[1.75rem]">{t}</h2>
-              <p className="mt-2 leading-relaxed text-ink-2">{d}</p>
+            <Reveal as="li" key={t} delay={i * 110} className="w-[82%] shrink-0 snap-start md:w-auto">
+              <div className="step-card relative flex h-full min-h-[15rem] flex-col justify-between overflow-hidden rounded-xl border border-line bg-coal p-6 md:min-h-[18rem] md:p-8">
+                <span aria-hidden className="step-num pointer-events-none absolute -top-4 -right-2 font-display text-[9rem] leading-none font-extrabold select-none md:text-[11rem]">{i + 1}</span>
+                <span className="font-display text-sm font-semibold tracking-[0.22em] text-accent uppercase">Étape 0{i + 1}</span>
+                <div className="relative">
+                  <h3 className="text-[2rem] leading-[0.95] md:text-[2.4rem]">{t}</h3>
+                  <p className="mt-3 leading-relaxed text-ink-2">{d}</p>
+                </div>
+              </div>
             </Reveal>
           ))}
         </ol>
+        <p className="mt-3 px-5 text-xs text-mute md:hidden">Faites glisser pour voir les étapes →</p>
       </section>
 
       {/* Formulaire */}
-      <section id="formulaire" className="mx-auto grid max-w-7xl scroll-mt-20 gap-8 px-5 sm:px-8 lg:grid-cols-[1fr_1.7fr] lg:gap-14">
+      <section id="formulaire" className="mx-auto mt-16 grid max-w-7xl scroll-mt-20 gap-8 px-5 sm:px-8 md:mt-24 lg:grid-cols-[1fr_1.6fr] lg:gap-14">
         <Reveal className="lg:sticky lg:top-24 lg:self-start">
           <p className="eyebrow eyebrow-accent mb-3">Demande de vente</p>
-          <h2 className="text-[2.4rem] md:text-5xl">Parlez-nous de votre véhicule</h2>
+          <h2 className="text-[2.6rem] leading-[0.92] md:text-6xl">Parlez-nous de<br /><span className="text-accent">votre véhicule</span></h2>
           <p className="mt-4 max-w-md leading-relaxed text-ink-2">Plus vos informations et vos photos sont précises, plus notre premier retour le sera aussi.</p>
           <ul className="mt-6 space-y-3">
             {points.map((p) => (
