@@ -1,82 +1,70 @@
 import type { Metadata } from "next";
-import { Button } from "@/components/Button";
-import { PageHero } from "@/components/PageHero";
-import { Reveal } from "@/components/Reveal";
-import { SellForm } from "@/components/SellForm";
-import { MaskTitle } from "@/components/home/MaskTitle";
+import { Icon, type IconName } from "@/components/Icon";
+import { placeholderContact, site, whatsappUrl } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Vendre mon véhicule",
-  description: "Confiez la vente de votre véhicule à IRONCAR à Nice : estimation, reprise ou vente accompagnée.",
+  description: "Vous souhaitez vendre votre voiture à Nice ? Appelez IRONCAR, écrivez-nous sur WhatsApp ou par e-mail.",
 };
 
-const steps = [
-  ["Vous décrivez votre véhicule", "Quelques informations et des photos suffisent pour une première étude."],
-  ["Nous l'examinons avec vous", "Nous fixons un rendez-vous pour voir le véhicule et en parler."],
-  ["Nous vous proposons une solution", "Reprise ou vente accompagnée : vous choisissez, sans engagement."],
+const contacts: { n: string; icon: IconName; title: string; sub: string; value: string; href: string; external?: boolean; pending: boolean }[] = [
+  { n: "01", icon: "phone", title: "Appelez-nous", sub: "Un échange direct et rapide", value: site.phone,
+    href: `tel:${site.phone.replace(/\s/g, "")}`, pending: placeholderContact.phone },
+  { n: "02", icon: "whatsapp", title: "Contactez-nous sur WhatsApp", sub: "Présentez votre véhicule en quelques mots", value: "Ouvrir la conversation",
+    href: whatsappUrl("Bonjour, je souhaite vendre mon véhicule avec IronCar."), external: true, pending: placeholderContact.whatsapp },
+  { n: "03", icon: "mail", title: "Envoyez-nous un e\u2011mail", sub: "Pour toute demande détaillée", value: site.email,
+    href: `mailto:${site.email}?subject=${encodeURIComponent("Demande de vente de véhicule – IronCar")}`, pending: placeholderContact.email },
 ];
-const points = ["Une étude de votre véhicule", "Un interlocuteur unique", "Reprise possible en échange d'un achat", "Démarches administratives prises en charge"];
+
+const words = ["Vendez", "votre", "véhicule."];
 
 export default function VendrePage() {
   return (
-    <>
-      <PageHero eyebrow="Vendre" title="Vendre mon véhicule"
-        intro="Vous souhaitez vendre votre voiture ou votre moto ? Décrivez-la ci-dessous : nous l'étudions et vous recontactons pour vous proposer la solution la plus adaptée.">
-        <div className="fade-up mt-7" style={{ ["--d" as string]: ".45s" }}>
-          <Button href="#formulaire" arrow>Décrire mon véhicule</Button>
-        </div>
-      </PageHero>
-
-      {/* Étapes : cartes éditoriales (carrousel au doigt sur mobile) */}
-      <section className="pt-14 md:pt-20">
-        <div className="mx-auto max-w-7xl px-5 sm:px-8">
-          <MaskTitle eyebrow="Comment ça marche" title="Trois étapes, c'est tout" className="mb-8 md:mb-12" />
-        </div>
-        <ol className="snap-row mx-auto flex max-w-7xl snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-2 sm:px-8 md:grid md:grid-cols-3 md:gap-5 md:overflow-visible">
-          {steps.map(([t, d], i) => (
-            <Reveal as="li" key={t} delay={i * 110} className="w-[82%] shrink-0 snap-start md:w-auto">
-              <div className="step-card relative flex h-full min-h-[15rem] flex-col justify-between overflow-hidden rounded-xl border border-line bg-coal p-6 md:min-h-[18rem] md:p-8">
-                <span aria-hidden className="step-num pointer-events-none absolute -top-4 -right-2 font-display text-[9rem] leading-none font-extrabold select-none md:text-[11rem]">{i + 1}</span>
-                <span className="font-display text-sm font-semibold tracking-[0.22em] text-accent uppercase">Étape 0{i + 1}</span>
-                <div className="relative">
-                  <h3 className="text-[2rem] leading-[0.95] md:text-[2.4rem]">{t}</h3>
-                  <p className="mt-3 leading-relaxed text-ink-2">{d}</p>
-                </div>
-              </div>
-            </Reveal>
+    <section className="relative overflow-hidden">
+      <div className="mx-auto max-w-5xl px-5 pt-28 pb-6 sm:px-8 md:pt-40">
+        <p className="fade-up eyebrow eyebrow-accent mb-5 flex items-center gap-3"><span className="hx-rule inline-block h-px w-10 bg-accent" />Vendre</p>
+        <h1 className="text-[clamp(3.1rem,14vw,7.5rem)] leading-[0.88] font-extrabold" aria-label="Vendez votre véhicule.">
+          {words.map((w, i) => (
+            <span key={w} aria-hidden className="word mr-[0.2em] last:mr-0">
+              <span className={i === 2 ? "text-accent" : ""} style={{ ["--d" as string]: `${0.08 + i * 0.1}s` }}>{w}</span>
+            </span>
           ))}
-        </ol>
-        <p className="mt-3 px-5 text-xs text-mute md:hidden">Faites glisser pour voir les étapes →</p>
-      </section>
+        </h1>
+        <p className="fade-up mt-6 max-w-xl text-[1.0625rem] leading-relaxed text-ink-2 md:text-lg" style={{ ["--d" as string]: ".4s" }}>
+          Vous souhaitez vendre votre voiture ? Échangeons directement sur votre projet. Un accompagnement simple, humain et sans démarches compliquées.
+        </p>
+      </div>
 
-      {/* Formulaire */}
-      <section id="formulaire" className="mx-auto mt-16 grid max-w-7xl scroll-mt-20 gap-8 px-5 sm:px-8 md:mt-24 lg:grid-cols-[1fr_1.6fr] lg:gap-14">
-        <Reveal className="lg:sticky lg:top-24 lg:self-start">
-          <p className="eyebrow eyebrow-accent mb-3">Demande de vente</p>
-          <h2 className="text-[2.6rem] leading-[0.92] md:text-6xl">Parlez-nous de<br /><span className="text-accent">votre véhicule</span></h2>
-          <p className="mt-4 max-w-md leading-relaxed text-ink-2">Plus vos informations et vos photos sont précises, plus notre premier retour le sera aussi.</p>
-          <ul className="mt-6 space-y-3">
-            {points.map((p) => (
-              <li key={p} className="flex items-center gap-3 text-[0.9375rem] text-ink-2">
-                <span className="grid size-6 shrink-0 place-items-center rounded-full border border-accent/60 text-accent"><svg viewBox="0 0 24 24" className="size-3.5" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden><path d="M5 12l5 5L20 7" /></svg></span>{p}
-              </li>
-            ))}
-          </ul>
-        </Reveal>
-        <Reveal delay={100}><SellForm /></Reveal>
-      </section>
+      {/* Moyens de contact */}
+      <ul className="mx-auto mt-8 max-w-5xl border-t border-line md:mt-14" aria-label="Contacter IRONCAR">
+        {contacts.map((c, i) => (
+          <li key={c.n} className="fade-up border-b border-line" style={{ ["--d" as string]: `${0.5 + i * 0.09}s` }}>
+            <a href={c.href} target={c.external ? "_blank" : undefined} rel={c.external ? "noopener noreferrer" : undefined}
+              className="contact-row group flex min-h-[6.5rem] items-center gap-4 px-5 py-5 sm:gap-6 sm:px-8 md:min-h-[8rem]">
+              <span className="hidden w-8 shrink-0 font-display text-sm font-semibold text-mute tabular-nums sm:block">{c.n}</span>
+              <span className="grid size-11 shrink-0 place-items-center rounded-full border border-line text-accent sm:size-12">
+                <Icon name={c.icon} className="size-5" />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="row-title block font-display text-[1.6rem] leading-[0.95] font-bold uppercase sm:text-[2.1rem] md:text-[2.6rem]">{c.title}</span>
+                <span className="mt-1.5 block text-[0.9375rem] text-ink-2">{c.sub}</span>
+                <span className="mt-1 flex flex-wrap items-center gap-2 text-sm text-mute">
+                  <span className="truncate">{c.value}</span>
+                  {c.pending && <span className="rounded border border-accent/40 px-1.5 py-0.5 text-[10px] font-medium tracking-wide text-accent uppercase">Coordonnée à configurer</span>}
+                </span>
+              </span>
+              <span className="row-arrow grid size-11 shrink-0 place-items-center rounded-full border border-line" aria-hidden>
+                <Icon name="arrow" className="size-4" />
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
 
-      {/* Recherche personnalisée (conservée) */}
-      <section className="mx-auto mt-20 max-w-7xl px-5 sm:px-8 md:mt-28">
-        <Reveal className="grid gap-6 rounded-lg border border-line bg-coal p-7 md:grid-cols-[1.5fr_auto] md:items-center md:p-10">
-          <div>
-            <p className="eyebrow eyebrow-accent mb-2">Vous cherchez plutôt un véhicule ?</p>
-            <h2 className="text-3xl md:text-4xl">Recherche personnalisée</h2>
-            <p className="mt-2 max-w-xl leading-relaxed text-ink-2">Indiquez-nous le modèle, le budget et vos critères : nous le recherchons pour vous.</p>
-          </div>
-          <Button href="/contact?sujet=recherche" variant="secondary" arrow>Faire une demande</Button>
-        </Reveal>
-      </section>
-    </>
+      <div className="fade-up mx-auto max-w-5xl px-5 pt-14 text-center sm:px-8" style={{ ["--d" as string]: ".85s" }}>
+        <p className="font-display text-sm font-semibold tracking-[0.28em] text-ink-2 uppercase">IRONCAR — Nice, Côte d&apos;Azur</p>
+        <p className="mt-2 text-sm text-mute">Achat · Vente · Inspection · Location</p>
+      </div>
+    </section>
   );
 }

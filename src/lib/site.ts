@@ -12,6 +12,13 @@ export const site = {
 
 export const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
+/** Coordonnées encore provisoires (à remplacer dans `site` ci-dessus). Sert uniquement à les signaler. */
+export const placeholderContact = {
+  phone: site.phone.includes("00 00 00 00"),
+  whatsapp: site.whatsapp === "33600000000",
+  email: site.email.endsWith(".example"),
+};
+
 export const nav = [
   { href: "/achat", label: "Acheter" },
   { href: "/reprise", label: "Vendre" },
